@@ -66,3 +66,36 @@ export function hideCitySelector() {
     payload: false
   };
 }
+
+export function setSelectedCity(city) {
+  return (dispatch, getState) => {
+    const { currentSelectingLeftCity } = getState();
+    if (currentSelectingLeftCity) {
+      dispatch(setFrom(city));
+    } else {
+      dispatch(setTo(city));
+    }
+  };
+}
+
+export function showDateSelector() {
+  return {
+    type: SET_IS_DATE_SELECTOR_VISIBLE,
+    payload: true
+  };
+}
+
+export function hideDateSelector() {
+  return {
+    type: SET_IS_DATE_SELECTOR_VISIBLE,
+    payload: false
+  };
+}
+
+export function exchangeFromTo() {
+  return (dispatch, getState) => {
+    const { from, to } = getState();
+    dispatch(setFrom(to));
+    dispatch(setTo(from));
+  };
+}
