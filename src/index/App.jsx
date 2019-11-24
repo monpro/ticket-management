@@ -6,12 +6,19 @@ import DepartDate from "./DepartDate";
 import HighSpeed from "./HighSpeed";
 import Submit from "./Submit";
 import Journey from "./Journey";
-
+import CitySelector from "../common/CitySelector";
 import { exchangeFromTo, showCitySelector } from "./actions";
 import { bindActionCreators } from "redux";
 
 const App = props => {
-  const { from, to, dispatch } = props;
+  const {
+    from,
+    to,
+    isCitySelectorVisible,
+    cityData,
+    isLoadingCityData,
+    dispatch
+  } = props;
   const onBack = useCallback(() => {
     window.history.back();
   }, []);
@@ -51,6 +58,11 @@ const App = props => {
         <HighSpeed />
         <Submit />
       </form>
+      <CitySelector
+        show={isCitySelectorVisible}
+        cityData={cityData}
+        isLoading={isLoadingCityData}
+      />
     </div>
   );
 };
