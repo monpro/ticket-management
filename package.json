@@ -74,13 +74,7 @@
     "extends": [
       "eslint:recommended",
       "react-app"
-    ],
-    "rules": {
-      "react/jsx-indent": [
-        "error",
-        4
-      ]
-    }
+    ]
   },
   "husky": {
     "hooks": {
