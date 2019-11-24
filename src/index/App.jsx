@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import "./App.css";
 import Header from "../common/Header";
@@ -8,6 +8,7 @@ import Submit from "./Submit";
 import Journey from "./Journey";
 
 import { exchangeFromTo, showCitySelector } from "./actions";
+import { bindActionCreators } from "redux";
 
 const App = props => {
   const { from, to, dispatch } = props;
@@ -15,12 +16,22 @@ const App = props => {
     window.history.back();
   }, []);
 
-  const doExchangeFromTo = useCallback(() => {
-    dispatch(exchangeFromTo());
-  }, []);
+  // const doExchangeFromTo = useCallback(() => {
+  //   dispatch(exchangeFromTo());
+  // }, []);
+  //
+  // const doShowCitySelector = useCallback(v => {
+  //   dispatch(showCitySelector(v));
+  // }, []);
 
-  const doShowCitySelector = useCallback(v => {
-    dispatch(showCitySelector(v));
+  const cbs = useMemo(() => {
+    return bindActionCreators(
+      {
+        exchangeFromTo,
+        showCitySelector
+      },
+      dispatch
+    );
   }, []);
 
   return (
@@ -28,15 +39,18 @@ const App = props => {
       <div className="header-wrapper">
         <Header title="Tickets" onBack={onBack} />
       </div>
-      <Journey
-        from={from}
-        to={to}
-        exchangeFromTo={doExchangeFromTo}
-        showCitySelector={doShowCitySelector}
-      />
-      <DepartDate />
-      <HighSpeed />
-      <Submit />
+      <form className="form">
+        <Journey
+          from={from}
+          to={to}
+          // exchangeFromTo={doExchangeFromTo}
+          // showCitySelector={doShowCitySelector}
+          {...cbs}
+        />
+        <DepartDate />
+        <HighSpeed />
+        <Submit />
+      </form>
     </div>
   );
 };
