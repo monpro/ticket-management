@@ -7,7 +7,12 @@ import HighSpeed from "./HighSpeed";
 import Submit from "./Submit";
 import Journey from "./Journey";
 import CitySelector from "../common/CitySelector";
-import { exchangeFromTo, showCitySelector, hideCitySelector } from "./actions";
+import {
+  exchangeFromTo,
+  showCitySelector,
+  hideCitySelector,
+  fetchCityData
+} from "./actions";
 import { bindActionCreators } from "redux";
 
 const App = props => {
@@ -16,7 +21,7 @@ const App = props => {
     to,
     isCitySelectorVisible,
     cityData,
-    isLoadingCityDate,
+    isLoadingCityData,
     dispatch
   } = props;
   const onBack = useCallback(() => {
@@ -44,7 +49,8 @@ const App = props => {
   const citySelectorCbs = useMemo(() => {
     return bindActionCreators(
       {
-        onBack: hideCitySelector
+        onBack: hideCitySelector,
+        fetchCityData
       },
       dispatch
     );
@@ -70,7 +76,7 @@ const App = props => {
       <CitySelector
         show={isCitySelectorVisible}
         cityData={cityData}
-        isLoading={isLoadingCityDate}
+        isLoading={isLoadingCityData}
         {...citySelectorCbs}
       />
     </div>
