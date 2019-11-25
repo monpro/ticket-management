@@ -11,7 +11,7 @@ export default createStore(
     isCitySelectorVisible: false,
     currentSelectingLeftCity: false,
     cityDate: null,
-    isLoadingCityDate: false,
+    isLoadingCityData: false,
     isDateSelectorVisible: false,
     highSpeed: false
   },
