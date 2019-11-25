@@ -10,6 +10,27 @@ export default function CitySelector(props) {
       className={classnames("city-selector", {
         hidden: !show
       })}
-    ></div>
+    >
+      <div className="city-search">
+        <div className="search-back">
+          <svg width="42" height="42">
+            <polyline
+              points="25,13 16,21 25,29"
+              stroke="#fff"
+              strokeWidth="2"
+              fill="none"
+            />
+          </svg>
+        </div>
+        <div className="search-input-wrapper">
+          <input
+            type="text"
+            value=""
+            className="search-input"
+            placeholder="please input the name of station or city"
+          />
+        </div>
+      </div>
+    </div>
   );
 }
