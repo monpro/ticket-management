@@ -60,7 +60,7 @@ export default {
     return state;
   },
 
-  isLoadingCityDate(state = false, action) {
+  isLoadingCityData(state = false, action) {
     const { type, payload } = action;
     switch (type) {
       case SET_IS_LOADING_CITY_DATE:

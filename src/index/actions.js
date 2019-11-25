@@ -29,10 +29,10 @@ export function setCityDate(CityDate) {
   };
 }
 
-export function setIsLoadingCityDate(isLoadingCityDate) {
+export function setisLoadingCityData(isLoadingCityData) {
   return {
     type: SET_IS_LOADING_CITY_DATE,
-    payload: isLoadingCityDate
+    payload: isLoadingCityData
   };
 }
 
@@ -97,5 +97,25 @@ export function exchangeFromTo() {
     const { from, to } = getState();
     dispatch(setFrom(to));
     dispatch(setTo(from));
+  };
+}
+
+export function fetchCityData() {
+  return (dispatch, getState) => {
+    const { isLoadingCityData } = getState();
+    if (isLoadingCityData) {
+      return;
+    }
+    dispatch(setisLoadingCityData(true));
+
+    fetch("/rest/cities?_" + Date.now())
+      .then(res => res.json())
+      .then(cityData => {
+        dispatch(setCityDate(cityData));
+        dispatch(setisLoadingCityData(false));
+      })
+      .catch(() => {
+        dispatch(setisLoadingCityData(false));
+      });
   };
 }
