@@ -106,12 +106,26 @@ export function fetchCityData() {
     if (isLoadingCityData) {
       return;
     }
+    const cache = JSON.parse(localStorage.getItem("city_data_cache") || "{}");
+
+    if (Date.now() < cache.expires) {
+      dispatch(setCityDate(cache.data));
+
+      return;
+    }
     dispatch(setisLoadingCityData(true));
 
     fetch("/rest/cities?_" + Date.now())
       .then(res => res.json())
       .then(cityData => {
         dispatch(setCityDate(cityData));
+        localStorage.setItem(
+          "city_data_cache",
+          JSON.stringify({
+            expires: Date.now() + 60 * 1000,
+            data: cityData
+          })
+        );
         dispatch(setisLoadingCityData(false));
       })
       .catch(() => {
