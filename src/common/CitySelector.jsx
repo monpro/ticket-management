@@ -30,6 +30,27 @@ function CitySelection(props) {
   );
 }
 
+function CityList(props) {
+  const { sections, onSelect } = props;
+
+  return (
+    <div className="city-list">
+      <div className="city-cate">
+        {sections.map(section => {
+          return (
+            <CitySelection
+              key={section.title}
+              title={section.title}
+              cities={section.citys}
+              onSelect={onSelect}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function CitySelector(props) {
   const { show, cityData, isLoading, onBack, fetchCityData } = props;
 
