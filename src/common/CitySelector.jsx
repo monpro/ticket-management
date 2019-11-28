@@ -13,6 +13,11 @@ function CityItem(props) {
   );
 }
 
+CityItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  onSelect: PropTypes.func.isRequired
+};
+
 function CitySelection(props) {
   const { title, cities = [], onSelect } = props;
 
@@ -29,6 +34,12 @@ function CitySelection(props) {
     </ul>
   );
 }
+
+CitySelection.propTypes = {
+  title: PropTypes.string.isRequired,
+  cities: PropTypes.array,
+  onSelect: PropTypes.func.isRequired
+};
 
 function CityList(props) {
   const { sections, onSelect } = props;
@@ -50,6 +61,11 @@ function CityList(props) {
     </div>
   );
 }
+
+CityList.propTypes = {
+  sections: PropTypes.array.isRequired,
+  onSelect: PropTypes.func.isRequired
+};
 
 export default function CitySelector(props) {
   const { show, cityData, isLoading, onBack, fetchCityData, onSelect } = props;
@@ -117,5 +133,6 @@ CitySelector.propTypes = {
   show: PropTypes.bool.isRequired,
   cityData: PropTypes.object,
   isLoading: PropTypes.bool.isRequired,
-  onBack: PropTypes.func.isRequired
+  onBack: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired
 };
