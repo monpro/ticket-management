@@ -22,14 +22,14 @@ export function setTo(to) {
   };
 }
 
-export function setCityDate(CityDate) {
+export function setcityData(cityData) {
   return {
     type: SET_CITY_DATE,
-    payload: CityDate
+    payload: cityData
   };
 }
 
-export function setisLoadingCityData(isLoadingCityData) {
+export function setIsLoadingCityData(isLoadingCityData) {
   return {
     type: SET_IS_LOADING_CITY_DATE,
     payload: isLoadingCityData
@@ -75,6 +75,8 @@ export function setSelectedCity(city) {
     } else {
       dispatch(setTo(city));
     }
+
+    dispatch(hideCitySelector());
   };
 }
 
@@ -109,16 +111,16 @@ export function fetchCityData() {
     const cache = JSON.parse(localStorage.getItem("city_data_cache") || "{}");
 
     if (Date.now() < cache.expires) {
-      dispatch(setCityDate(cache.data));
+      dispatch(setcityData(cache.data));
 
       return;
     }
-    dispatch(setisLoadingCityData(true));
+    dispatch(setIsLoadingCityData(true));
 
     fetch("/rest/cities?_" + Date.now())
       .then(res => res.json())
       .then(cityData => {
-        dispatch(setCityDate(cityData));
+        dispatch(setcityData(cityData));
         localStorage.setItem(
           "city_data_cache",
           JSON.stringify({
@@ -126,10 +128,10 @@ export function fetchCityData() {
             data: cityData
           })
         );
-        dispatch(setisLoadingCityData(false));
+        dispatch(setIsLoadingCityData(false));
       })
       .catch(() => {
-        dispatch(setisLoadingCityData(false));
+        dispatch(setIsLoadingCityData(false));
       });
   };
 }

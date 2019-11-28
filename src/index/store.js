@@ -10,7 +10,7 @@ export default createStore(
     to: "Melbourne",
     isCitySelectorVisible: false,
     currentSelectingLeftCity: false,
-    cityDate: null,
+    cityData: null,
     isLoadingCityData: false,
     isDateSelectorVisible: false,
     highSpeed: false

@@ -50,7 +50,7 @@ export default {
     return state;
   },
 
-  cityDate(state = null, action) {
+  cityData(state = null, action) {
     const { type, payload } = action;
     switch (type) {
       case SET_CITY_DATE:
