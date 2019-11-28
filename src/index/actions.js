@@ -22,10 +22,10 @@ export function setTo(to) {
   };
 }
 
-export function setCityDate(CityDate) {
+export function setcityData(cityData) {
   return {
     type: SET_CITY_DATE,
-    payload: CityDate
+    payload: cityData
   };
 }
 
@@ -75,6 +75,8 @@ export function setSelectedCity(city) {
     } else {
       dispatch(setTo(city));
     }
+
+    dispatch(hideCitySelector());
   };
 }
 
@@ -109,7 +111,7 @@ export function fetchCityData() {
     const cache = JSON.parse(localStorage.getItem("city_data_cache") || "{}");
 
     if (Date.now() < cache.expires) {
-      dispatch(setCityDate(cache.data));
+      dispatch(setcityData(cache.data));
 
       return;
     }
@@ -118,7 +120,7 @@ export function fetchCityData() {
     fetch("/rest/cities?_" + Date.now())
       .then(res => res.json())
       .then(cityData => {
-        dispatch(setCityDate(cityData));
+        dispatch(setcityData(cityData));
         localStorage.setItem(
           "city_data_cache",
           JSON.stringify({
