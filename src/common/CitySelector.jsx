@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, memo } from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 import "./CitySelector.css";
 
-function CityItem(props) {
+const CityItem = memo(props => {
   const { name, onSelect } = props;
 
   return (
@@ -11,14 +11,14 @@ function CityItem(props) {
       {name}
     </li>
   );
-}
+});
 
 CityItem.propTypes = {
   name: PropTypes.string.isRequired,
   onSelect: PropTypes.func.isRequired
 };
 
-function CitySelection(props) {
+const CitySelection = memo(props => {
   const { title, cities = [], onSelect } = props;
 
   return (
@@ -33,7 +33,7 @@ function CitySelection(props) {
       })}
     </ul>
   );
-}
+});
 
 CitySelection.propTypes = {
   title: PropTypes.string.isRequired,
@@ -41,7 +41,7 @@ CitySelection.propTypes = {
   onSelect: PropTypes.func.isRequired
 };
 
-function CityList(props) {
+const CityList = memo(props => {
   const { sections, onSelect } = props;
 
   return (
@@ -60,7 +60,7 @@ function CityList(props) {
       </div>
     </div>
   );
-}
+});
 
 CityList.propTypes = {
   sections: PropTypes.array.isRequired,
