@@ -52,7 +52,7 @@ function CityList(props) {
 }
 
 export default function CitySelector(props) {
-  const { show, cityData, isLoading, onBack, fetchCityData } = props;
+  const { show, cityData, isLoading, onBack, fetchCityData, onSelect } = props;
 
   const [searchKey, setSearchKey] = useState("");
 
@@ -63,7 +63,18 @@ export default function CitySelector(props) {
       return;
     }
     fetchCityData();
-  }, [show, cityData, isLoading]);
+  }, [show, cityData]);
+
+  const outputCitySelectors = () => {
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
+
+    if (cityData) {
+      return <CityList sections={cityData.cityList} onSelect={onSelect} />;
+    }
+    return <div>error</div>;
+  };
   return (
     <div
       className={classnames("city-selector", {
@@ -90,13 +101,14 @@ export default function CitySelector(props) {
             onChange={e => setSearchKey(e.target.value)}
           />
         </div>
+        <i
+          className={classnames("search-clean", { hidden: key.length === 0 })}
+          onClick={() => setSearchKey("")}
+        >
+          &#xf063;
+        </i>
       </div>
-      <i
-        className={classnames("search-clean", { hidden: key.length === 0 })}
-        onClick={() => setSearchKey("")}
-      >
-        &#xf063;
-      </i>
+      {outputCitySelectors()}
     </div>
   );
 }
