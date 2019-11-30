@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, memo } from "react";
+import React, { useState, useMemo, useEffect, memo, useCallback } from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 import "./CitySelector.css";
@@ -22,7 +22,7 @@ const CitySelection = memo(props => {
   const { title, cities = [], onSelect } = props;
   return (
     <ul className="city-ul">
-      <li className="city-li" key="title">
+      <li className="city-li" key="title" data-cate={title}>
         {title}
       </li>
       {cities.map(city => {
@@ -50,6 +50,11 @@ const AlphaIndex = memo(props => {
   );
 });
 
+AlphaIndex.propTypes = {
+  alpha: PropTypes.array.isRequired,
+  onClick: PropTypes.func.isRequired
+};
+
 const getAlphabetArray = () => {
   return Array.from(new Array(26), (ele, index) => {
     return String.fromCharCode(65 + index);
@@ -57,8 +62,10 @@ const getAlphabetArray = () => {
 };
 
 const CityList = memo(props => {
-  const { sections, onSelect } = props;
-
+  const { sections, onSelect, toAlpha } = props;
+  /* eslint-disable no-console */
+  console.log(getAlphabetArray());
+  /* eslint-enable no-console */
   return (
     <div className="city-list">
       <div className="city-cate">
@@ -73,13 +80,19 @@ const CityList = memo(props => {
           );
         })}
       </div>
+      <div className="city-index">
+        {getAlphabetArray().map(alpha => {
+          return <AlphaIndex key={alpha} alpha={alpha} onClick={toAlpha} />;
+        })}
+      </div>
     </div>
   );
 });
 
 CityList.propTypes = {
   sections: PropTypes.array.isRequired,
-  onSelect: PropTypes.func.isRequired
+  onSelect: PropTypes.func.isRequired,
+  toAlpha: PropTypes.func.isRequired
 };
 
 export default function CitySelector(props) {
@@ -96,13 +109,23 @@ export default function CitySelector(props) {
     fetchCityData();
   }, [show, cityData]);
 
+  const toAlpha = useCallback(alpha => {
+    document.querySelector(`[data-cate=${alpha} ]`).scrollIntoView();
+  }, []);
+
   const outputCitySelectors = () => {
     if (isLoading) {
       return <div>Loading...</div>;
     }
 
     if (cityData) {
-      return <CityList sections={cityData.cityList} onSelect={onSelect} />;
+      return (
+        <CityList
+          sections={cityData.cityList}
+          onSelect={onSelect}
+          toAlpha={toAlpha}
+        />
+      );
     }
     return <div>error</div>;
   };
