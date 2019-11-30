@@ -20,7 +20,6 @@ CityItem.propTypes = {
 
 const CitySelection = memo(props => {
   const { title, cities = [], onSelect } = props;
-
   return (
     <ul className="city-ul">
       <li className="city-li" key="title">
@@ -39,6 +38,22 @@ CitySelection.propTypes = {
   title: PropTypes.string.isRequired,
   cities: PropTypes.array,
   onSelect: PropTypes.func.isRequired
+};
+
+const AlphaIndex = memo(props => {
+  const { alpha, onClick } = props;
+
+  return (
+    <i className="city-index-item" onClick={() => onClick(alpha)}>
+      {alpha}
+    </i>
+  );
+});
+
+const getAlphabetArray = () => {
+  return Array.from(new Array(26), (ele, index) => {
+    return String.fromCharCode(65 + index);
+  });
 };
 
 const CityList = memo(props => {
