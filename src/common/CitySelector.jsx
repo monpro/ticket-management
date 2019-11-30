@@ -61,6 +61,38 @@ const getAlphabetArray = () => {
   });
 };
 
+const SuggestItem = memo(props => {
+  const { name, onClick } = props;
+
+  return (
+    <li className="city-suggest-li" onClick={() => onClick(name)}>
+      {name}
+    </li>
+  );
+});
+
+SuggestItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired
+};
+
+const Suggest = memo(props => {
+  const { searchKey, onSelect } = props;
+
+  const [result, setResult] = useState([]);
+  useEffect(() => {
+    fetch("/rest/search?key=" + encodeURIComponent(searchKey))
+      .then(res => res.json())
+      .then(data => {
+        const { result, searchKey: sKey } = data;
+
+        if (sKey === searchKey) {
+          setResult(result);
+        }
+      });
+  }, [searchKey]);
+});
+
 const CityList = memo(props => {
   const { sections, onSelect, toAlpha } = props;
   /* eslint-disable no-console */
