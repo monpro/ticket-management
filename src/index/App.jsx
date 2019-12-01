@@ -7,13 +7,15 @@ import HighSpeed from "./HighSpeed";
 import Submit from "./Submit";
 import Journey from "./Journey";
 import CitySelector from "../common/CitySelector";
+import DateSelector from "../common/DateSelector.jsx";
 import {
   exchangeFromTo,
   showCitySelector,
   hideCitySelector,
   fetchCityData,
   setSelectedCity,
-  showDateSelector
+  showDateSelector,
+  hideDateSelector
 } from "./actions";
 import { bindActionCreators } from "redux";
 
@@ -22,6 +24,7 @@ const App = props => {
     from,
     to,
     isCitySelectorVisible,
+    isDateSelectorVisible,
     cityData,
     isLoadingCityData,
     dispatch,
@@ -69,6 +72,14 @@ const App = props => {
     );
   }, []);
 
+  const dateSelectorCbs = useMemo(() => {
+    return bindActionCreators(
+      {
+        onBack: hideDateSelector
+      },
+      dispatch
+    );
+  }, []);
   return (
     <div>
       <div className="header-wrapper">
@@ -91,6 +102,12 @@ const App = props => {
         cityData={cityData}
         isLoading={isLoadingCityData}
         {...citySelectorCbs}
+      />
+      <DateSelector
+        show={isDateSelectorVisible}
+        {...dateSelectorCbs}
+        // onSelect={}
+        // onBack={}
       />
     </div>
   );
