@@ -9,6 +9,20 @@ import "./DateSelector.css";
 const Month = props => {
   const { startingTimeInMonth } = props;
 
+  const startDay = new Date(startingTimeInMonth);
+  const currentDay = new Date(startingTimeInMonth);
+
+  let days = [];
+
+  while (currentDay.getMonth() === startDay.getMonth()) {
+    days.push(currentDay.getDay());
+    currentDay.setDate(currentDay.getDate() + 1);
+  }
+
+  days = new Array(startDay.getDay() ? startDay.getDay() - 1 : 6)
+    .fill(null)
+    .concat(days);
+
   return <div></div>;
 };
 
