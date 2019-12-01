@@ -51,7 +51,7 @@ const AlphaIndex = memo(props => {
 });
 
 AlphaIndex.propTypes = {
-  alpha: PropTypes.array.isRequired,
+  alpha: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired
 };
 
@@ -91,6 +91,33 @@ const Suggest = memo(props => {
         }
       });
   }, [searchKey]);
+
+  const fallBackResult = useMemo(() => {
+    if (!result.length) {
+      return [
+        {
+          display: searchKey
+        }
+      ];
+    }
+    return result;
+  }, [result, searchKey]);
+
+  return (
+    <div className="city-suggest">
+      <ul className="city-suggest-ul">
+        {fallBackResult.map(item => {
+          return (
+            <SuggestItem
+              key={item.display}
+              name={item.display}
+              onClick={onSelect}
+            />
+          );
+        })}
+      </ul>
+    </div>
+  );
 });
 
 const CityList = memo(props => {
@@ -194,6 +221,9 @@ export default function CitySelector(props) {
           &#xf063;
         </i>
       </div>
+      {Boolean(key) && (
+        <Suggest searchKey={key} onSelect={key => onSelect(key)} />
+      )}
       {outputCitySelectors()}
     </div>
   );
