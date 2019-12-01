@@ -15,7 +15,7 @@ const Month = props => {
   let days = [];
 
   while (currentDay.getMonth() === startDay.getMonth()) {
-    days.push(currentDay.getDay());
+    days.push(currentDay.getTime());
     currentDay.setDate(currentDay.getDate() + 1);
   }
 
@@ -23,7 +23,31 @@ const Month = props => {
     .fill(null)
     .concat(days);
 
-  return <div></div>;
+  const lastDay = new Date(days[days.length - 1]);
+
+  days = days.concat(
+    new Array(lastDay.getDay() ? 7 - lastDay.getDay() : 0).fill(null)
+  );
+
+  const weeks = [];
+
+  for (let row = 0; row < days.length / 7; row++) {
+    const week = days.slice(row * 7, (row + 1) * 7);
+    weeks.push(week);
+  }
+  return (
+    <table className="date-table">
+      <thead>
+        <tr>
+          <td colSpan="7">
+            <h5>
+              {startDay.getFullYear()}.{startDay.getMonth() + 1}
+            </h5>
+          </td>
+        </tr>
+      </thead>
+    </table>
+  );
 };
 
 export default function DateSelector(props) {
