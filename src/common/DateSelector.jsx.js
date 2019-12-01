@@ -1,13 +1,57 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-
+import { getDateWithDay } from "./helper";
 import Header from "./Header";
 
 import "./DateSelector.css";
 
+const Day = props => {
+  const { day, onSelect } = props;
+
+  if (!day) {
+    return <td className="null"></td>;
+  }
+
+  const classes = [];
+  const nowDay = getDateWithDay();
+
+  if (day < nowDay) {
+    classes.push("disabled");
+  }
+
+  if ([6, 0].includes(new Date(day).getDay())) {
+    classes.push("weekend");
+  }
+
+  const dateString = nowDay === day ? "Today" : new Date(day).getDate();
+  return <td className={classnames(classes)}>{dateString}</td>;
+};
+
+Day.propTypes = {
+  day: PropTypes.number,
+  onSelect: PropTypes.func.isRequired
+};
+
+const Week = props => {
+  const { days, onSelect } = props;
+
+  return (
+    <tr className="date-table-days">
+      {days.map((day, index) => {
+        return <Day key={index} day={day} onSelect={onSelect} />;
+      })}
+    </tr>
+  );
+};
+
+Week.propTypes = {
+  days: PropTypes.array.isRequired,
+  onSelect: PropTypes.func.isRequired
+};
+
 const Month = props => {
-  const { startingTimeInMonth } = props;
+  const { startingTimeInMonth, onSelect } = props;
 
   const startDay = new Date(startingTimeInMonth);
   const currentDay = new Date(startingTimeInMonth);
@@ -46,8 +90,27 @@ const Month = props => {
           </td>
         </tr>
       </thead>
+      <tbody>
+        <tr className="date-table-weeks">
+          <th>Mon</th>
+          <th>Tue</th>
+          <th>Wed</th>
+          <th>Thur</th>
+          <th>Fri</th>
+          <th className="weekend">Sat</th>
+          <th className="weekend">Sun</th>
+        </tr>
+        {weeks.map((week, index) => {
+          return <Week key={index} days={week} onSelect={onSelect} />;
+        })}
+      </tbody>
     </table>
   );
+};
+
+Month.propTypes = {
+  startingTimeInMonth: PropTypes.number.isRequired,
+  onSelect: PropTypes.func.isRequired
 };
 
 export default function DateSelector(props) {
@@ -72,7 +135,13 @@ export default function DateSelector(props) {
       <Header onBack={onBack} title={"Select Date"} />
       <div className="date-selector-tables">
         {monthSequence.map(month => {
-          return <Month key={month} startingTimeInMonth={month} />;
+          return (
+            <Month
+              key={month}
+              startingTimeInMonth={month}
+              onSelect={onSelect}
+            />
+          );
         })}
       </div>
     </div>
