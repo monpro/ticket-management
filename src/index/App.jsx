@@ -12,7 +12,8 @@ import {
   showCitySelector,
   hideCitySelector,
   fetchCityData,
-  setSelectedCity
+  setSelectedCity,
+  showDateSelector
 } from "./actions";
 import { bindActionCreators } from "redux";
 
@@ -23,7 +24,8 @@ const App = props => {
     isCitySelectorVisible,
     cityData,
     isLoadingCityData,
-    dispatch
+    dispatch,
+    departDate
   } = props;
   const onBack = useCallback(() => {
     window.history.back();
@@ -58,6 +60,15 @@ const App = props => {
     );
   }, []);
 
+  const departDateCbs = useMemo(() => {
+    return bindActionCreators(
+      {
+        onClick: showDateSelector
+      },
+      dispatch
+    );
+  }, []);
+
   return (
     <div>
       <div className="header-wrapper">
@@ -71,7 +82,7 @@ const App = props => {
           // showCitySelector={doShowCitySelector}
           {...cbs}
         />
-        <DepartDate />
+        <DepartDate time={departDate} {...departDateCbs} />
         <HighSpeed />
         <Submit />
       </form>
