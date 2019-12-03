@@ -8,6 +8,7 @@ import Submit from "./Submit";
 import Journey from "./Journey";
 import CitySelector from "../common/CitySelector";
 import DateSelector from "../common/DateSelector.jsx";
+import { getDateWithDay } from "../common/helper";
 import {
   exchangeFromTo,
   showCitySelector,
@@ -15,7 +16,8 @@ import {
   fetchCityData,
   setSelectedCity,
   showDateSelector,
-  hideDateSelector
+  hideDateSelector,
+  setDepartDate
 } from "./actions";
 import { bindActionCreators } from "redux";
 
@@ -80,6 +82,20 @@ const App = props => {
       dispatch
     );
   }, []);
+
+  const onSelectDate = useCallback(day => {
+    if (!day) {
+      return;
+    }
+
+    if (day < getDateWithDay()) {
+      return;
+    }
+
+    dispatch(setDepartDate(day));
+    dispatch(hideDateSelector());
+  }, []);
+
   return (
     <div>
       <div className="header-wrapper">
@@ -106,7 +122,7 @@ const App = props => {
       <DateSelector
         show={isDateSelectorVisible}
         {...dateSelectorCbs}
-        // onSelect={}
+        onSelect={onSelectDate}
         // onBack={}
       />
     </div>
