@@ -25,7 +25,11 @@ const Day = props => {
   }
 
   const dateString = nowDay === day ? "Today" : new Date(day).getDate();
-  return <td className={classnames(classes)}>{dateString}</td>;
+  return (
+    <td className={classnames(classes)} onClick={() => onSelect(day)}>
+      {dateString}
+    </td>
+  );
 };
 
 Day.propTypes = {
