@@ -7,6 +7,7 @@ export const SET_CITY_DATE = "SET_CITY_DATE";
 export const SET_IS_LOADING_CITY_DATE = "SET_IS_LOADING_;CITY_DATE";
 export const SET_IS_DATE_SELECTOR_VISIBLE = "SET_IS_DATE;_SELECTOR_VISIBLE";
 export const SET_HIGH_SPEED = "SET_HIGH_SPEED";
+export const SET_DEPART_DATE = "SET_DEPART_DATE";
 
 export function setFrom(from) {
   return {
@@ -99,6 +100,13 @@ export function exchangeFromTo() {
     const { from, to } = getState();
     dispatch(setFrom(to));
     dispatch(setTo(from));
+  };
+}
+
+export function setDepartDate(departDate) {
+  return {
+    type: SET_DEPART_DATE,
+    payload: departDate
   };
 }
 
