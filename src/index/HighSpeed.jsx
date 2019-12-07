@@ -20,7 +20,7 @@ export default function HighSpeed(props) {
             className={classnames("high-speed-handle", {
               checked: highSpeed
             })}
-          ></span>
+          />
         </div>
       </div>
     </div>
