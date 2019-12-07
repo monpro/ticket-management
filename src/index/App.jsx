@@ -17,7 +17,8 @@ import {
   setSelectedCity,
   showDateSelector,
   hideDateSelector,
-  setDepartDate
+  setDepartDate,
+  toggleHighSpeed
 } from "./actions";
 import { bindActionCreators } from "redux";
 
@@ -30,7 +31,8 @@ const App = props => {
     cityData,
     isLoadingCityData,
     dispatch,
-    departDate
+    departDate,
+    highSpeed
   } = props;
   const onBack = useCallback(() => {
     window.history.back();
@@ -83,6 +85,15 @@ const App = props => {
     );
   }, []);
 
+  const highSpeedCbs = useMemo(() => {
+    return bindActionCreators(
+      {
+        toggle: toggleHighSpeed
+      },
+      dispatch
+    );
+  }, []);
+
   const onSelectDate = useCallback(day => {
     if (!day) {
       return;
@@ -101,7 +112,7 @@ const App = props => {
       <div className="header-wrapper">
         <Header title="Tickets" onBack={onBack} />
       </div>
-      <form className="form">
+      <form className="form" action="./query.html">
         <Journey
           from={from}
           to={to}
@@ -110,7 +121,7 @@ const App = props => {
           {...cbs}
         />
         <DepartDate time={departDate} {...departDateCbs} />
-        <HighSpeed />
+        <HighSpeed highSpeed={highSpeed} {...highSpeedCbs} />
         <Submit />
       </form>
       <CitySelector
