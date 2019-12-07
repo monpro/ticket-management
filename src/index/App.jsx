@@ -112,7 +112,7 @@ const App = props => {
       <div className="header-wrapper">
         <Header title="Tickets" onBack={onBack} />
       </div>
-      <form className="form">
+      <form className="form" action="./query.html">
         <Journey
           from={from}
           to={to}
