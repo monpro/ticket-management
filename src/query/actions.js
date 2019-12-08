@@ -1,4 +1,5 @@
 import { ORDER_DEPART, ORDER_DURATION } from "./constant";
+import { getDateWithDay } from "../common/helper";
 
 export const ACTION_FROM = "ACTION_FROM";
 export const ACTION_TO = "ACTION_TO";
@@ -50,6 +51,13 @@ export function setHighSpeed(highSpeed) {
   };
 }
 
+export function toggleHighSpeed() {
+  return (dispatch, getState) => {
+    const { highSpeed } = getState();
+    dispatch(setHighSpeed(!highSpeed));
+  };
+}
+
 export function setTrainList(trainList) {
   return {
     type: ACTION_TRAIN_LIST,
@@ -74,10 +82,13 @@ export function toggleOrderType(orderType) {
   };
 }
 
-export function setOnlyTickets(onlyTickets) {
-  return {
-    type: ACTION_ONLY_TICKETS,
-    payload: onlyTickets
+export function toggleOnlyTickets(onlyTickets) {
+  return (dispatch, getState) => {
+    const { onlyTickets } = getState();
+    dispatch({
+      type: ACTION_ONLY_TICKETS,
+      payload: !onlyTickets
+    });
   };
 }
 
@@ -165,10 +176,13 @@ export function setArriveTimeEnd(arriveTimeEnd) {
   };
 }
 
-export function setIsFilterVisible(isFilterVisible) {
-  return {
-    type: ACTION_IS_FILTER_VISIBLE,
-    payload: isFilterVisible
+export function toggleIsFilterVisible(isFilterVisible) {
+  return (dispatch, getState) => {
+    const { isFilterVisible } = getState();
+    dispatch({
+      type: ACTION_IS_FILTER_VISIBLE,
+      payload: !isFilterVisible
+    });
   };
 }
 
@@ -176,5 +190,19 @@ export function setSearchParsed(searchParsed) {
   return {
     type: ACTION_SEARCH_PARSED,
     payload: searchParsed
+  };
+}
+
+export function nextDate() {
+  return (dispatch, getState) => {
+    const { departDate } = getState();
+    dispatch(setDepartDate(getDateWithDay(departDate) + 86400 * 1000));
+  };
+}
+
+export function prevDate() {
+  return (dispatch, getState) => {
+    const { departDate } = getState();
+    dispatch(setDepartDate(getDateWithDay(departDate) - 86400 * 1000));
   };
 }
