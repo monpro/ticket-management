@@ -15,7 +15,15 @@ const App = props => {
   );
 };
 
+const mapStateToProps = state => state;
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch
+  };
+};
+
 export default connect(
-  null,
-  {}
+  mapStateToProps,
+  mapDispatchToProps
 )(App);
