@@ -14,7 +14,12 @@ import {
   setTo,
   setDepartDate,
   setHighSpeed,
-  setSearchParsed
+  setSearchParsed,
+  setTrainList,
+  setTicketTypes,
+  setTrainTypes,
+  setDepartStations,
+  setArriveStations
 } from "./actions";
 
 const App = props => {
@@ -77,6 +82,24 @@ const App = props => {
       .setSearch("arriveTimeStart", arriveTimeStart)
       .setSearch("arriveTimeEnd", arriveTimeEnd)
       .toString();
+
+    fetch(url)
+      .then(response => response.json())
+      .then(result => {
+        const {
+          dataMap: {
+            directTrainInfo: {
+              trains,
+              filter: { ticketType, trainType, depStation, arrStation }
+            }
+          }
+        } = result;
+        dispatch(setTrainList(trains));
+        dispatch(setTicketTypes(ticketType));
+        dispatch(setTrainTypes(trainType));
+        dispatch(setDepartStations(depStation));
+        dispatch(setArriveStations(arrStation));
+      });
   }, [
     from,
     to,
