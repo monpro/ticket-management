@@ -10,7 +10,7 @@ export default function Journey(props) {
         <input
           type="text"
           readOnly
-          name="form"
+          name="from"
           value={from}
           className="journey-input journey-from"
         />
