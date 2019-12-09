@@ -26,6 +26,9 @@ import { ORDER_DEPART } from "./constant";
 export default {
   from(state = null, action) {
     const { type, payload } = action;
+    /* eslint-disable no-console */
+    console.log("action", action);
+    /* eslint-enable no-console */
     switch (type) {
       case ACTION_FROM:
         return payload;
