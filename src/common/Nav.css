@@ -25,7 +25,7 @@
 .nav-date {
   color: #3cc;
   position: relative;
-  display: block;
+  /*display: block;*/
   margin: 0 80px;
 }
 

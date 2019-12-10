@@ -21,10 +21,10 @@ const Nav = memo(function(props) {
       >
         prev Day
       </span>
-      <span className="nav-current">{currentDateString}</span>
+      <span className="nav-date">{currentDateString}</span>
       <span
         onClick={next}
-        className={classnames("nav-prev", {
+        className={classnames("nav-next", {
           "nav-disabled": isNextDisabled
         })}
       >

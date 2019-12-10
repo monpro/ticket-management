@@ -121,7 +121,7 @@ const App = props => {
       <div className="header-wrapper">
         <Header onBack={onBack} title={`${from} - ${to}`} />
       </div>
-      <Nav />
+      <Nav date={departDate} />
       <List />
       <Filter />
     </div>
