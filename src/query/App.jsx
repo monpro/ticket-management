@@ -8,7 +8,7 @@ import Header from "../common/Header";
 import Nav from "../common/Nav";
 import List from "./List";
 import Filter from "./Filter";
-
+import useNav from "../common/useNav";
 import {
   setFrom,
   setTo,
@@ -19,7 +19,9 @@ import {
   setTicketTypes,
   setTrainTypes,
   setDepartStations,
-  setArriveStations
+  setArriveStations,
+  prevDate,
+  nextDate
 } from "./actions";
 
 const App = props => {
@@ -45,6 +47,13 @@ const App = props => {
   const onBack = useCallback(() => {
     window.history.back();
   }, []);
+
+  const { isPrevDisabled, isNextDisabled, prev, next } = useNav(
+    departDate,
+    dispatch,
+    prevDate,
+    nextDate
+  );
 
   useEffect(() => {
     const queries = URI.parseQuery(window.location.search);
@@ -121,7 +130,13 @@ const App = props => {
       <div className="header-wrapper">
         <Header onBack={onBack} title={`${from} - ${to}`} />
       </div>
-      <Nav date={departDate} />
+      <Nav
+        date={departDate}
+        isNextDisabled={isNextDisabled}
+        isPrevDisabled={isPrevDisabled}
+        prev={prev}
+        next={next}
+      />
       <List />
       <Filter />
     </div>
