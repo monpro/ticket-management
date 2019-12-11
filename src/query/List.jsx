@@ -1,4 +1,5 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
+import URI from "urijs";
 import PropTypes from "prop-types";
 import "./List.css";
 
@@ -15,7 +16,49 @@ const ListItem = memo(props => {
     dayAfter
   } = props;
 
-  return <li className="list-item"></li>;
+  const url = useMemo(() => {
+    return new URI("ticket.html")
+      .setSearch("aStation", aStation)
+      .setSearch("dStation", dStation)
+      .setSearch("trainNumber", trainNumber)
+      .setSearch("date", date);
+  }, [aStation, dStation, trainNumber, date]);
+
+  return (
+    <li className="list-item">
+      <a href={url}>
+        <span className="item-time">
+          <em className="em-light"> {dTime} </em>
+          <br />
+          <em>
+            {" "}
+            {aTime} <i className="time-after">{dayAfter}</i>
+          </em>
+        </span>
+        <span className="item-stations">
+          <em className="em-light">
+            <i className="train-station train-start">s</i>
+            {dStation}
+          </em>
+          <br />
+          <em>
+            <i className="train-station train-end">e</i>
+            {aStation}
+          </em>
+        </span>
+        <span className="item-train">
+          <em className="em-light"> {trainNumber} </em>
+          <br />
+          <em> {time} </em>
+        </span>
+        <span className="item-ticket">
+          <em>{priceMsg}</em>
+          <br />
+          <em className="em-light-orange"> get ticket</em>
+        </span>
+      </a>
+    </li>
+  );
 });
 
 ListItem.propTypes = {
