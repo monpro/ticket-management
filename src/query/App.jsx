@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import "./App.css";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import URI from "urijs";
 import dayjs from "dayjs";
 import { getDateWithDay } from "../common/helper";
@@ -21,7 +22,11 @@ import {
   setDepartStations,
   setArriveStations,
   prevDate,
-  nextDate
+  nextDate,
+  toggleHighSpeed,
+  toggleIsFilterVisible,
+  toggleOnlyTickets,
+  toggleOrderType
 } from "./actions";
 
 const App = props => {
@@ -34,6 +39,7 @@ const App = props => {
     highSpeed,
     orderType,
     onlyTickets,
+    isFilterVisible,
     checkedTicketTypes,
     checkedTrainTypes,
     checkedDepartStations,
@@ -41,7 +47,8 @@ const App = props => {
     departTimeStart,
     departTimeEnd,
     arriveTimeStart,
-    arriveTimeEnd
+    arriveTimeEnd,
+    trainList
   } = props;
 
   const onBack = useCallback(() => {
@@ -54,6 +61,18 @@ const App = props => {
     prevDate,
     nextDate
   );
+
+  const filterCbs = useMemo(() => {
+    return bindActionCreators(
+      {
+        toggleHighSpeed,
+        toggleIsFilterVisible,
+        toggleOnlyTickets,
+        toggleOrderType
+      },
+      dispatch
+    );
+  }, []);
 
   useEffect(() => {
     const queries = URI.parseQuery(window.location.search);
@@ -137,8 +156,14 @@ const App = props => {
         prev={prev}
         next={next}
       />
-      <List />
-      <Filter />
+      <List list={trainList} />
+      <Filter
+        highSpeed={highSpeed}
+        orderType={orderType}
+        onlyTickets={onlyTickets}
+        isFilterVisible={isFilterVisible}
+        {...filterCbs}
+      />
     </div>
   );
 };
