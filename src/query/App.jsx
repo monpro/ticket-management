@@ -190,7 +190,6 @@ const App = props => {
         departTimeEnd={departTimeEnd}
         arriveTimeStart={arriveTimeStart}
         arriveTimeEnd={arriveTimeEnd}
-        trainList={trainList}
         ticketTypes={ticketTypes}
         trainTypes={trainTypes}
         departStations={departStations}

@@ -13,7 +13,27 @@ export default function Filter(props) {
     highSpeed,
     orderType,
     onlyTickets,
-    isFilterVisible
+    isFilterVisible,
+    checkedTicketTypes,
+    checkedTrainTypes,
+    checkedDepartStations,
+    checkedArriveStations,
+    departTimeStart,
+    departTimeEnd,
+    arriveTimeStart,
+    arriveTimeEnd,
+    ticketTypes,
+    trainTypes,
+    departStations,
+    arriveStations,
+    setCheckedArriveStations,
+    setCheckedDepartStations,
+    setCheckedTicketTypes,
+    setCheckedTrainTypes,
+    setDepartTimeStart,
+    setDepartTimeEnd,
+    setArriveTimeStart,
+    setArriveTimeEnd
   } = props;
   return (
     <div className="bottom">
@@ -58,5 +78,27 @@ Filter.propTypes = {
   highSpeed: PropTypes.bool.isRequired,
   orderType: PropTypes.number.isRequired,
   onlyTickets: PropTypes.bool.isRequired,
-  isFilterVisible: PropTypes.bool.isRequired
+  isFilterVisible: PropTypes.bool.isRequired,
+
+  checkedTicketTypes: PropTypes.object.isRequired,
+  checkedTrainTypes: PropTypes.object.isRequired,
+  checkedDepartStations: PropTypes.object.isRequired,
+  checkedArriveStations: PropTypes.object.isRequired,
+  departTimeStart: PropTypes.number.isRequired,
+  departTimeEnd: PropTypes.number.isRequired,
+  arriveTimeStart: PropTypes.number.isRequired,
+  arriveTimeEnd: PropTypes.number.isRequired,
+  ticketTypes: PropTypes.array.isRequired,
+  trainTypes: PropTypes.array.isRequired,
+  departStations: PropTypes.array.isRequired,
+  arriveStations: PropTypes.array.isRequired,
+
+  setCheckedArriveStations: PropTypes.func.isRequired,
+  setCheckedDepartStations: PropTypes.func.isRequired,
+  setCheckedTicketTypes: PropTypes.func.isRequired,
+  setCheckedTrainTypes: PropTypes.func.isRequired,
+  setDepartTimeStart: PropTypes.func.isRequired,
+  setDepartTimeEnd: PropTypes.func.isRequired,
+  setArriveTimeStart: PropTypes.func.isRequired,
+  setArriveTimeEnd: PropTypes.func.isRequired
 };
