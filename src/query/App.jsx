@@ -26,7 +26,15 @@ import {
   toggleHighSpeed,
   toggleIsFilterVisible,
   toggleOnlyTickets,
-  toggleOrderType
+  toggleOrderType,
+  setCheckedArriveStations,
+  setCheckedDepartStations,
+  setCheckedTicketTypes,
+  setCheckedTrainTypes,
+  setDepartTimeStart,
+  setDepartTimeEnd,
+  setArriveTimeStart,
+  setArriveTimeEnd
 } from "./actions";
 
 const App = props => {
@@ -48,7 +56,11 @@ const App = props => {
     departTimeEnd,
     arriveTimeStart,
     arriveTimeEnd,
-    trainList
+    trainList,
+    ticketTypes,
+    trainTypes,
+    departStations,
+    arriveStations
   } = props;
 
   const onBack = useCallback(() => {
@@ -68,7 +80,15 @@ const App = props => {
         toggleHighSpeed,
         toggleIsFilterVisible,
         toggleOnlyTickets,
-        toggleOrderType
+        toggleOrderType,
+        setCheckedArriveStations,
+        setCheckedDepartStations,
+        setCheckedTicketTypes,
+        setCheckedTrainTypes,
+        setDepartTimeStart,
+        setDepartTimeEnd,
+        setArriveTimeStart,
+        setArriveTimeEnd
       },
       dispatch
     );
@@ -162,6 +182,18 @@ const App = props => {
         orderType={orderType}
         onlyTickets={onlyTickets}
         isFilterVisible={isFilterVisible}
+        checkedTicketTypes={checkedTicketTypes}
+        checkedTrainTypes={checkedTrainTypes}
+        checkedDepartStations={checkedDepartStations}
+        checkedArriveStations={checkedArriveStations}
+        departTimeStart={departTimeStart}
+        departTimeEnd={departTimeEnd}
+        arriveTimeStart={arriveTimeStart}
+        arriveTimeEnd={arriveTimeEnd}
+        ticketTypes={ticketTypes}
+        trainTypes={trainTypes}
+        departStations={departStations}
+        arriveStations={arriveStations}
         {...filterCbs}
       />
     </div>
