@@ -4,6 +4,44 @@ import classnames from "classnames";
 import "./Filter.css";
 import { ORDER_DEPART } from "./constant";
 
+const SingleFilter = memo(props => {
+  const { name, checked } = props;
+
+  return <li className={classnames({ checked: checked })}>{name}</li>;
+});
+
+SingleFilter.propTypes = {
+  name: PropTypes.string.isRequired,
+  checked: PropTypes.bool.isRequired
+};
+
+const Option = memo(props => {
+  const { title, options, checkedOptions } = props;
+
+  return (
+    <div className="option">
+      <h3>{title}</h3>
+      <ul>
+        {options.map(option => {
+          return (
+            <SingleFilter
+              {...option}
+              key={option.value}
+              checked={option.value in checkedOptions}
+            />
+          );
+        })}
+      </ul>
+    </div>
+  );
+});
+
+Option.propTypes = {
+  title: PropTypes.string.isRequired,
+  options: PropTypes.array.isRequired,
+  checkedOptions: PropTypes.object.isRequired
+};
+
 const BottomModel = memo(props => {
   const {
     checkedTicketTypes,
@@ -29,11 +67,42 @@ const BottomModel = memo(props => {
     toggleIsFilterVisible
   } = props;
 
+  const options = [
+    {
+      title: "seat",
+      options: ticketTypes,
+      checkedOptions: checkedTicketTypes
+    },
+    {
+      title: "train",
+      options: trainTypes,
+      checkedOptions: checkedTrainTypes
+    },
+    {
+      title: "depart stations",
+      options: departStations,
+      checkedOptions: checkedDepartStations
+    },
+    {
+      title: "arrive stations",
+      options: arriveStations,
+      checkedOptions: checkedArriveStations
+    }
+  ];
+
   return (
     <div className="bottom-modal">
       <div className="bottom-dialog">
         <div className="bottom-dialog-content">
-          <div className="title"></div>
+          <div className="title">
+            <span className="reset">reset</span>
+            <span className="ok">submit</span>
+          </div>
+          <div className="options">
+            {options.map(option => (
+              <Option {...option} key={option.title} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -41,7 +110,7 @@ const BottomModel = memo(props => {
 });
 
 BottomModel.propTypes = {
-  isFilterVisible: PropTypes.bool.isRequired,
+  toggleIsFilterVisible: PropTypes.func.isRequired,
 
   checkedTicketTypes: PropTypes.object.isRequired,
   checkedTrainTypes: PropTypes.object.isRequired,
