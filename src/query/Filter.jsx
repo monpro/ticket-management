@@ -1,8 +1,70 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import "./Filter.css";
 import { ORDER_DEPART } from "./constant";
+
+const BottomModel = memo(props => {
+  const {
+    checkedTicketTypes,
+    checkedTrainTypes,
+    checkedDepartStations,
+    checkedArriveStations,
+    departTimeStart,
+    departTimeEnd,
+    arriveTimeStart,
+    arriveTimeEnd,
+    ticketTypes,
+    trainTypes,
+    departStations,
+    arriveStations,
+    setCheckedArriveStations,
+    setCheckedDepartStations,
+    setCheckedTicketTypes,
+    setCheckedTrainTypes,
+    setDepartTimeStart,
+    setDepartTimeEnd,
+    setArriveTimeStart,
+    setArriveTimeEnd,
+    toggleIsFilterVisible
+  } = props;
+
+  return (
+    <div className="bottom-modal">
+      <div className="bottom-dialog">
+        <div className="bottom-dialog-content">
+          <div className="title"></div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+BottomModel.propTypes = {
+  isFilterVisible: PropTypes.bool.isRequired,
+
+  checkedTicketTypes: PropTypes.object.isRequired,
+  checkedTrainTypes: PropTypes.object.isRequired,
+  checkedDepartStations: PropTypes.object.isRequired,
+  checkedArriveStations: PropTypes.object.isRequired,
+  departTimeStart: PropTypes.number.isRequired,
+  departTimeEnd: PropTypes.number.isRequired,
+  arriveTimeStart: PropTypes.number.isRequired,
+  arriveTimeEnd: PropTypes.number.isRequired,
+  ticketTypes: PropTypes.array.isRequired,
+  trainTypes: PropTypes.array.isRequired,
+  departStations: PropTypes.array.isRequired,
+  arriveStations: PropTypes.array.isRequired,
+
+  setCheckedArriveStations: PropTypes.func.isRequired,
+  setCheckedDepartStations: PropTypes.func.isRequired,
+  setCheckedTicketTypes: PropTypes.func.isRequired,
+  setCheckedTrainTypes: PropTypes.func.isRequired,
+  setDepartTimeStart: PropTypes.func.isRequired,
+  setDepartTimeEnd: PropTypes.func.isRequired,
+  setArriveTimeStart: PropTypes.func.isRequired,
+  setArriveTimeEnd: PropTypes.func.isRequired
+};
 
 export default function Filter(props) {
   const {
@@ -14,6 +76,7 @@ export default function Filter(props) {
     orderType,
     onlyTickets,
     isFilterVisible,
+
     checkedTicketTypes,
     checkedTrainTypes,
     checkedDepartStations,
@@ -66,6 +129,31 @@ export default function Filter(props) {
           Filters
         </span>
       </div>
+      {isFilterVisible && (
+        <BottomModel
+          checkedTicketTypes={checkedTicketTypes}
+          checkedTrainTypes={checkedTrainTypes}
+          checkedDepartStations={checkedDepartStations}
+          checkedArriveStations={checkedArriveStations}
+          departTimeStart={departTimeStart}
+          departTimeEnd={departTimeEnd}
+          arriveTimeStart={arriveTimeStart}
+          arriveTimeEnd={arriveTimeEnd}
+          ticketTypes={ticketTypes}
+          trainTypes={trainTypes}
+          departStations={departStations}
+          arriveStations={arriveStations}
+          setCheckedArriveStations={setCheckedArriveStations}
+          setCheckedDepartStations={setCheckedDepartStations}
+          setCheckedTicketTypes={setCheckedTicketTypes}
+          setCheckedTrainTypes={setCheckedTrainTypes}
+          setDepartTimeStart={setDepartTimeStart}
+          setDepartTimeEnd={setDepartTimeEnd}
+          setArriveTimeStart={setArriveTimeStart}
+          setArriveTimeEnd={setArriveTimeEnd}
+          toggleIsFilterVisible={toggleIsFilterVisible}
+        />
+      )}
     </div>
   );
 }
