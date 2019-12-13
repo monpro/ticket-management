@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import "./Filter.css";
@@ -67,26 +67,58 @@ const BottomModel = memo(props => {
     toggleIsFilterVisible
   } = props;
 
+  const [localCheckedTicketTypes, setLocalCheckedTicketTypes] = useState(() => {
+    return {
+      ...checkedTicketTypes
+    };
+  });
+
+  const [localCheckedTrainTypes, setLocalCheckedTrainTypes] = useState(() => {
+    return {
+      ...checkedTrainTypes
+    };
+  });
+
+  const [localCheckedDepartStations, setLocalCheckedDepartStations] = useState(
+    () => {
+      return {
+        ...checkedDepartStations
+      };
+    }
+  );
+
+  const [localCheckedArriveStations, setLocalCheckedArriveStations] = useState(
+    () => {
+      return {
+        ...checkedArriveStations
+      };
+    }
+  );
+
   const options = [
     {
       title: "seat",
       options: ticketTypes,
-      checkedOptions: checkedTicketTypes
+      checkedOptions: localCheckedTicketTypes,
+      update: setLocalCheckedTicketTypes
     },
     {
       title: "train",
       options: trainTypes,
-      checkedOptions: checkedTrainTypes
+      checkedOptions: localCheckedTrainTypes,
+      update: setLocalCheckedTrainTypes
     },
     {
       title: "depart stations",
       options: departStations,
-      checkedOptions: checkedDepartStations
+      checkedOptions: localCheckedDepartStations,
+      update: setLocalCheckedDepartStations
     },
     {
       title: "arrive stations",
       options: arriveStations,
-      checkedOptions: checkedArriveStations
+      checkedOptions: localCheckedArriveStations,
+      update: setLocalCheckedArriveStations
     }
   ];
 
