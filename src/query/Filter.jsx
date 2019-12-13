@@ -1,22 +1,44 @@
-import React, { memo, useState } from "react";
+import React, { memo, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import "./Filter.css";
 import { ORDER_DEPART } from "./constant";
 
 const SingleFilter = memo(props => {
-  const { name, checked } = props;
+  const { name, checked, toggle, value } = props;
 
-  return <li className={classnames({ checked: checked })}>{name}</li>;
+  return (
+    <li
+      className={classnames({ checked: checked })}
+      onClick={() => toggle(value)}
+    >
+      {name}
+    </li>
+  );
 });
 
 SingleFilter.propTypes = {
   name: PropTypes.string.isRequired,
-  checked: PropTypes.bool.isRequired
+  checked: PropTypes.bool.isRequired,
+  toggle: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired
 };
 
 const Option = memo(props => {
-  const { title, options, checkedOptions } = props;
+  const { title, options, checkedOptions, update } = props;
+
+  const toggle = useCallback(
+    val => {
+      const newCheckedOptions = { ...checkedOptions };
+      if (val in checkedOptions) {
+        delete newCheckedOptions[val];
+      } else {
+        newCheckedOptions[val] = true;
+      }
+      update(newCheckedOptions);
+    },
+    [update, checkedOptions]
+  );
 
   return (
     <div className="option">
@@ -28,6 +50,7 @@ const Option = memo(props => {
               {...option}
               key={option.value}
               checked={option.value in checkedOptions}
+              toggle={toggle}
             />
           );
         })}
@@ -39,7 +62,8 @@ const Option = memo(props => {
 Option.propTypes = {
   title: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
-  checkedOptions: PropTypes.object.isRequired
+  checkedOptions: PropTypes.object.isRequired,
+  update: PropTypes.func.isRequired
 };
 
 const BottomModel = memo(props => {
