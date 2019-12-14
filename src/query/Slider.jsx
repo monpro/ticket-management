@@ -1,4 +1,4 @@
-import React, { memo, useState, useMemo } from "react";
+import React, { memo, useState, useMemo, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import leftPad from "left-pad";
 import "./Slider.css";
@@ -48,6 +48,53 @@ const Slider = memo(props => {
     return leftPad(endHours, 2, "0") + ":00";
   }, [endHours]);
 
+  const startHandle = useRef();
+  const endHandle = useRef();
+
+  const lastStartXais = useRef();
+  const lastEndXais = useRef();
+
+  const onStartTouchStart = () => {};
+  const onStartTouchMove = () => {};
+  const onEndTouchStart = () => {};
+  const onEndTouchMove = () => {};
+
+  useEffect(() => {
+    startHandle.current.addEventListener(
+      "touchstart",
+      onStartTouchStart,
+      false
+    );
+
+    startHandle.current.addEventListener("touchmove", onStartTouchMove, false);
+
+    endHandle.current.addEventListener("touchstart", onEndTouchStart, false);
+
+    endHandle.current.addEventListener("touchmove", onEndTouchMove, false);
+
+    return () => {
+      startHandle.current.removeEventListener(
+        "touchstart",
+        onStartTouchStart,
+        false
+      );
+
+      startHandle.current.removeEventListener(
+        "touchmove",
+        onStartTouchMove,
+        false
+      );
+
+      endHandle.current.removeEventListener(
+        "touchstart",
+        onEndTouchStart,
+        false
+      );
+
+      endHandle.current.removeEventListener("touchmove", onEndTouchMove, false);
+    };
+  });
+
   return (
     <div className="option">
       <h3>{title}</h3>
@@ -61,6 +108,7 @@ const Slider = memo(props => {
             }}
           ></div>
           <i
+            ref={startHandle}
             className="slider-handle"
             style={{
               left: parsedStart + "%"
@@ -69,6 +117,7 @@ const Slider = memo(props => {
             <span> {startText} </span>
           </i>
           <i
+            ref={endHandle}
             className="slider-handle"
             style={{
               left: parsedEnd + "%"
