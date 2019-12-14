@@ -54,10 +54,32 @@ const Slider = memo(props => {
   const lastStartXais = useRef();
   const lastEndXais = useRef();
 
-  const onStartTouchStart = () => {};
-  const onStartTouchMove = () => {};
-  const onEndTouchStart = () => {};
-  const onEndTouchMove = () => {};
+  const range = useRef();
+  const rangeWidth = useRef();
+
+  const onStartTouchStart = e => {
+    const touch = e.targetTouches[0];
+    lastStartXais.current = touch.pageX;
+  };
+
+  const onEndTouchStart = e => {
+    const touch = e.targetTouches[0];
+    lastEndXais.current = touch.pageX;
+  };
+
+  const onStartTouchMove = e => {
+    const touch = e.targetTouches[0];
+    const distance = touch.pageX - lastStartXais.current;
+    lastStartXais.current = touch.pageX;
+    setStart(start => start + (distance / rangeWidth.current) * 100);
+  };
+
+  const onEndTouchMove = e => {
+    const touch = e.targetTouches[0];
+    const distance = touch.pageX - lastEndXais.current;
+    lastEndXais.current = touch.pageX;
+    setEnd(end => end + (distance / rangeWidth.current) * 100);
+  };
 
   useEffect(() => {
     startHandle.current.addEventListener(
@@ -95,11 +117,17 @@ const Slider = memo(props => {
     };
   });
 
+  useEffect(() => {
+    rangeWidth.current = parseFloat(
+      window.getComputedStyle(range.current).width
+    );
+  }, []);
+
   return (
     <div className="option">
       <h3>{title}</h3>
       <div className="range-slider">
-        <div className="slider">
+        <div className="slider" ref={range}>
           <div
             className="slider-range"
             style={{
