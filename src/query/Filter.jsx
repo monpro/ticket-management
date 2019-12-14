@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import "./Filter.css";
 import { ORDER_DEPART } from "./constant";
-
+import Slider from "./Slider.jsx";
 const SingleFilter = memo(props => {
   const { name, checked, toggle, value } = props;
 
@@ -119,6 +119,15 @@ const BottomModel = memo(props => {
     }
   );
 
+  const [localDepartTimeStart, setLocalDepartTimeStart] = useState(
+    departTimeStart
+  );
+  const [localDepartTimeEnd, setLocalDepartTimeEnd] = useState(departTimeEnd);
+  const [localArriveTimeStart, setLocalArriveTimeStart] = useState(
+    arriveTimeStart
+  );
+  const [localArriveTimeEnd, setLocalArriveTimeEnd] = useState(arriveTimeEnd);
+
   const options = [
     {
       title: "seat",
@@ -158,6 +167,20 @@ const BottomModel = memo(props => {
             {options.map(option => (
               <Option {...option} key={option.title} />
             ))}
+            <Slider
+              title="Depart Time"
+              currentStartHours={localDepartTimeStart}
+              currentEndHours={localDepartTimeEnd}
+              onStartChanged={setLocalDepartTimeStart}
+              onEndChanged={setLocalDepartTimeEnd}
+            />
+            <Slider
+              title="Arrive Time"
+              currentStartHours={localArriveTimeStart}
+              currentEndHours={localArriveTimeEnd}
+              onStartChanged={setLocalArriveTimeStart}
+              onEndChanged={setLocalArriveTimeEnd}
+            />
           </div>
         </div>
       </div>
