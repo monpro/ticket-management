@@ -1,6 +1,7 @@
 import React, { memo, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import leftPad from "left-pad";
+import "./Slider.css";
 const Slider = memo(props => {
   const {
     title,
@@ -47,10 +48,41 @@ const Slider = memo(props => {
     return leftPad(endHours, 2, "0") + ":00";
   }, [endHours]);
 
-  return <div></div>;
+  return (
+    <div className="option">
+      <h3>{title}</h3>
+      <div className="range-slider">
+        <div className="slider">
+          <div
+            className="slider-range"
+            style={{
+              left: parsedStart + "%",
+              width: parsedEnd - parsedStart + "%"
+            }}
+          ></div>
+          <i
+            className="slider-handle"
+            style={{
+              left: parsedStart + "%"
+            }}
+          >
+            <span> {startText} </span>
+          </i>
+          <i
+            className="slider-handle"
+            style={{
+              left: parsedEnd + "%"
+            }}
+          >
+            <span> {endText} </span>
+          </i>
+        </div>
+      </div>
+    </div>
+  );
 });
 
-Slider.PropTypes = {
+Slider.propTypes = {
   title: PropTypes.string.isRequired,
   currentStartHours: PropTypes.number.isRequired,
   currentEndHours: PropTypes.number.isRequired,
