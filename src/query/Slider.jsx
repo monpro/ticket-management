@@ -2,6 +2,7 @@ import React, { memo, useState, useMemo, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import leftPad from "left-pad";
 import "./Slider.css";
+import useWinSize from "./useWindowsSize";
 const Slider = memo(props => {
   const {
     title,
@@ -13,7 +14,7 @@ const Slider = memo(props => {
 
   const [start, setStart] = useState(() => (currentStartHours / 24) * 100);
   const [end, setEnd] = useState(() => (currentEndHours / 24) * 100);
-
+  const windowsSize = useWinSize();
   const parsedStart = useMemo(() => {
     if (start > 100) {
       return 100;
@@ -121,7 +122,15 @@ const Slider = memo(props => {
     rangeWidth.current = parseFloat(
       window.getComputedStyle(range.current).width
     );
-  }, []);
+  }, [windowsSize.width]);
+
+  useEffect(() => {
+    onStartChanged(startHours);
+  }, [startHours]);
+
+  useEffect(() => {
+    onEndChanged(endHours);
+  }, [endHours]);
 
   return (
     <div className="option">
