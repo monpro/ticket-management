@@ -155,13 +155,30 @@ const BottomModel = memo(props => {
     }
   ];
 
+  const onSubmitLocalState = () => {
+    setCheckedArriveStations(localCheckedArriveStations);
+    setCheckedDepartStations(localCheckedDepartStations);
+    setCheckedTrainTypes(localCheckedTrainTypes);
+    setCheckedTicketTypes(localCheckedTicketTypes);
+
+    setDepartTimeStart(localDepartTimeStart);
+    setDepartTimeEnd(localDepartTimeEnd);
+
+    setArriveTimeStart(localArriveTimeStart);
+    setArriveTimeEnd(localArriveTimeEnd);
+
+    toggleIsFilterVisible();
+  };
+
   return (
     <div className="bottom-modal">
       <div className="bottom-dialog">
         <div className="bottom-dialog-content">
           <div className="title">
             <span className="reset">reset</span>
-            <span className="ok">submit</span>
+            <span className="ok" onClick={onSubmitLocalState}>
+              submit
+            </span>
           </div>
           <div className="options">
             {options.map(option => (
