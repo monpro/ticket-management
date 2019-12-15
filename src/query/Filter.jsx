@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback } from "react";
+import React, { memo, useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import "./Filter.css";
@@ -155,13 +155,75 @@ const BottomModel = memo(props => {
     }
   ];
 
+  const onSubmitLocalState = () => {
+    setCheckedArriveStations(localCheckedArriveStations);
+    setCheckedDepartStations(localCheckedDepartStations);
+    setCheckedTrainTypes(localCheckedTrainTypes);
+    setCheckedTicketTypes(localCheckedTicketTypes);
+
+    setDepartTimeStart(localDepartTimeStart);
+    setDepartTimeEnd(localDepartTimeEnd);
+
+    setArriveTimeStart(localArriveTimeStart);
+    setArriveTimeEnd(localArriveTimeEnd);
+
+    toggleIsFilterVisible();
+  };
+
+  const resetState = () => {
+    if (isResetDisabled) {
+      return;
+    }
+    setLocalCheckedArriveStations({});
+    setLocalCheckedDepartStations({});
+    setLocalCheckedTrainTypes({});
+    setLocalCheckedTicketTypes({});
+
+    setLocalDepartTimeStart(0);
+    setLocalDepartTimeEnd(24);
+
+    setLocalArriveTimeStart(0);
+    setLocalArriveTimeEnd(24);
+  };
+
+  const isResetDisabled = useMemo(() => {
+    return (
+      Object.keys(localCheckedArriveStations).length === 0 &&
+      Object.keys(localCheckedDepartStations).length === 0 &&
+      Object.keys(localCheckedTrainTypes).length === 0 &&
+      Object.keys(localCheckedTicketTypes).length === 0 &&
+      localDepartTimeStart === 0 &&
+      localDepartTimeEnd === 24 &&
+      localArriveTimeStart === 0 &&
+      localArriveTimeEnd === 24
+    );
+  }, [
+    localCheckedArriveStations,
+    localCheckedDepartStations,
+    localCheckedTrainTypes,
+    localCheckedTicketTypes,
+    localDepartTimeStart,
+    localDepartTimeEnd,
+    localArriveTimeStart,
+    localArriveTimeEnd
+  ]);
+
   return (
     <div className="bottom-modal">
       <div className="bottom-dialog">
         <div className="bottom-dialog-content">
           <div className="title">
-            <span className="reset">reset</span>
-            <span className="ok">submit</span>
+            <span
+              className={classnames("reset", {
+                disabled: isResetDisabled
+              })}
+              onClick={resetState}
+            >
+              reset
+            </span>
+            <span className="ok" onClick={onSubmitLocalState}>
+              submit
+            </span>
           </div>
           <div className="options">
             {options.map(option => (
@@ -246,6 +308,28 @@ export default function Filter(props) {
     setArriveTimeStart,
     setArriveTimeEnd
   } = props;
+
+  const noChecked = useMemo(() => {
+    return (
+      Object.keys(checkedArriveStations).length === 0 &&
+      Object.keys(checkedDepartStations).length === 0 &&
+      Object.keys(checkedTrainTypes).length === 0 &&
+      Object.keys(checkedTicketTypes).length === 0 &&
+      departTimeStart === 0 &&
+      departTimeEnd === 24 &&
+      arriveTimeStart === 0 &&
+      arriveTimeEnd === 24
+    );
+  }, [
+    checkedArriveStations,
+    checkedDepartStations,
+    checkedTrainTypes,
+    checkedTicketTypes,
+    departTimeStart,
+    departTimeEnd,
+    arriveTimeStart,
+    arriveTimeEnd
+  ]);
   return (
     <div className="bottom">
       <div className="bottom-filters">
@@ -270,10 +354,12 @@ export default function Filter(props) {
           only show available
         </span>
         <span
-          className={classnames("item", { "item-on": isFilterVisible })}
+          className={classnames("item", {
+            "item-on": isFilterVisible || !noChecked
+          })}
           onClick={toggleIsFilterVisible}
         >
-          <i className="icon"> {"\uf0f7"}</i>
+          <i className="icon"> {noChecked ? "\uf0f7" : "\uf446"}</i>
           Filters
         </span>
       </div>
