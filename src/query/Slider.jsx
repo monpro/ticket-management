@@ -14,6 +14,20 @@ const Slider = memo(props => {
 
   const [start, setStart] = useState(() => (currentStartHours / 24) * 100);
   const [end, setEnd] = useState(() => (currentEndHours / 24) * 100);
+
+  const prevStartHours = useRef(currentStartHours);
+  const prevEndHours = useRef(currentEndHours);
+
+  if (prevStartHours.current !== currentStartHours) {
+    setStart((currentStartHours / 24) * 100);
+    prevStartHours.current = currentStartHours;
+  }
+
+  if (prevEndHours.current !== currentEndHours) {
+    setEnd((currentEndHours / 24) * 100);
+    prevEndHours.current = currentEndHours;
+  }
+
   const windowsSize = useWinSize();
   const parsedStart = useMemo(() => {
     if (start > 100) {
