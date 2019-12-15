@@ -308,6 +308,28 @@ export default function Filter(props) {
     setArriveTimeStart,
     setArriveTimeEnd
   } = props;
+
+  const noChecked = useMemo(() => {
+    return (
+      Object.keys(checkedArriveStations).length === 0 &&
+      Object.keys(checkedDepartStations).length === 0 &&
+      Object.keys(checkedTrainTypes).length === 0 &&
+      Object.keys(checkedTicketTypes).length === 0 &&
+      departTimeStart === 0 &&
+      departTimeEnd === 24 &&
+      arriveTimeStart === 0 &&
+      arriveTimeEnd === 24
+    );
+  }, [
+    checkedArriveStations,
+    checkedDepartStations,
+    checkedTrainTypes,
+    checkedTicketTypes,
+    departTimeStart,
+    departTimeEnd,
+    arriveTimeStart,
+    arriveTimeEnd
+  ]);
   return (
     <div className="bottom">
       <div className="bottom-filters">
@@ -332,10 +354,12 @@ export default function Filter(props) {
           only show available
         </span>
         <span
-          className={classnames("item", { "item-on": isFilterVisible })}
+          className={classnames("item", {
+            "item-on": isFilterVisible || !noChecked
+          })}
           onClick={toggleIsFilterVisible}
         >
-          <i className="icon"> {"\uf0f7"}</i>
+          <i className="icon"> {noChecked ? "\uf0f7" : "\uf446"}</i>
           Filters
         </span>
       </div>
