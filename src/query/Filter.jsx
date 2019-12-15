@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback } from "react";
+import React, { memo, useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import "./Filter.css";
@@ -171,6 +171,9 @@ const BottomModel = memo(props => {
   };
 
   const resetState = () => {
+    if (isResetDisabled) {
+      return;
+    }
     setLocalCheckedArriveStations({});
     setLocalCheckedDepartStations({});
     setLocalCheckedTrainTypes({});
@@ -183,12 +186,39 @@ const BottomModel = memo(props => {
     setLocalArriveTimeEnd(24);
   };
 
+  const isResetDisabled = useMemo(() => {
+    return (
+      Object.keys(localCheckedArriveStations).length === 0 &&
+      Object.keys(localCheckedDepartStations).length === 0 &&
+      Object.keys(localCheckedTrainTypes).length === 0 &&
+      Object.keys(localCheckedTicketTypes).length === 0 &&
+      localDepartTimeStart === 0 &&
+      localDepartTimeEnd === 24 &&
+      localArriveTimeStart === 0 &&
+      localArriveTimeEnd === 24
+    );
+  }, [
+    localCheckedArriveStations,
+    localCheckedDepartStations,
+    localCheckedTrainTypes,
+    localCheckedTicketTypes,
+    localDepartTimeStart,
+    localDepartTimeEnd,
+    localArriveTimeStart,
+    localArriveTimeEnd
+  ]);
+
   return (
     <div className="bottom-modal">
       <div className="bottom-dialog">
         <div className="bottom-dialog-content">
           <div className="title">
-            <span className="reset" onClick={resetState}>
+            <span
+              className={classnames("reset", {
+                disabled: isResetDisabled
+              })}
+              onClick={resetState}
+            >
               reset
             </span>
             <span className="ok" onClick={onSubmitLocalState}>
