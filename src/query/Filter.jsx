@@ -1,16 +1,37 @@
-import React, { memo, useState, useCallback, useMemo } from "react";
+import React, { memo, useState, useCallback, useMemo, useReducer } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import "./Filter.css";
 import { ORDER_DEPART } from "./constant";
 import Slider from "./Slider.jsx";
+
+const checkedReducer = (state, action) => {
+  let newState;
+  const { type, payload } = action;
+  switch (type) {
+    case "toggle": {
+      newState = { ...state };
+      if (payload in newState) {
+        delete newState[payload];
+      } else {
+        newState[payload] = true;
+      }
+      return newState;
+    }
+
+    case "reset":
+      return {};
+    default:
+      return state;
+  }
+};
 const SingleFilter = memo(props => {
-  const { name, checked, toggle, value } = props;
+  const { name, checked, dispatch, value } = props;
 
   return (
     <li
       className={classnames({ checked: checked })}
-      onClick={() => toggle(value)}
+      onClick={() => dispatch({ type: "toggle", payload: value })}
     >
       {name}
     </li>
@@ -25,20 +46,7 @@ SingleFilter.propTypes = {
 };
 
 const Option = memo(props => {
-  const { title, options, checkedOptions, update } = props;
-
-  const toggle = useCallback(
-    val => {
-      const newCheckedOptions = { ...checkedOptions };
-      if (val in checkedOptions) {
-        delete newCheckedOptions[val];
-      } else {
-        newCheckedOptions[val] = true;
-      }
-      update(newCheckedOptions);
-    },
-    [update, checkedOptions]
-  );
+  const { title, options, checkedOptions, dispatch } = props;
 
   return (
     <div className="option">
@@ -50,7 +58,7 @@ const Option = memo(props => {
               {...option}
               key={option.value}
               checked={option.value in checkedOptions}
-              toggle={toggle}
+              dispatch={dispatch}
             />
           );
         })}
@@ -63,7 +71,7 @@ Option.propTypes = {
   title: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   checkedOptions: PropTypes.object.isRequired,
-  update: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired
 };
 
 const BottomModel = memo(props => {
@@ -91,28 +99,46 @@ const BottomModel = memo(props => {
     toggleIsFilterVisible
   } = props;
 
-  const [localCheckedTicketTypes, setLocalCheckedTicketTypes] = useState(() => {
-    return {
-      ...checkedTicketTypes
-    };
-  });
+  const [localCheckedTicketTypes, dispatchLocalCheckedTicketTypes] = useReducer(
+    checkedReducer,
+    checkedTicketTypes,
+    checkedTicketTypes => {
+      return {
+        ...checkedTicketTypes
+      };
+    }
+  );
 
-  const [localCheckedTrainTypes, setLocalCheckedTrainTypes] = useState(() => {
-    return {
-      ...checkedTrainTypes
-    };
-  });
+  const [localCheckedTrainTypes, dispatchLocalCheckedTrainTypes] = useReducer(
+    checkedReducer,
+    checkedTrainTypes,
+    checkedTrainTypes => {
+      return {
+        ...checkedTrainTypes
+      };
+    }
+  );
 
-  const [localCheckedDepartStations, setLocalCheckedDepartStations] = useState(
-    () => {
+  const [
+    localCheckedDepartStations,
+    dispatchLocalCheckedDepartStations
+  ] = useReducer(
+    checkedReducer,
+    checkedDepartStations,
+    checkedDepartStations => {
       return {
         ...checkedDepartStations
       };
     }
   );
 
-  const [localCheckedArriveStations, setLocalCheckedArriveStations] = useState(
-    () => {
+  const [
+    localCheckedArriveStations,
+    dispatchLocalCheckedArriveStations
+  ] = useReducer(
+    checkedReducer,
+    checkedArriveStations,
+    checkedArriveStations => {
       return {
         ...checkedArriveStations
       };
@@ -133,25 +159,25 @@ const BottomModel = memo(props => {
       title: "seat",
       options: ticketTypes,
       checkedOptions: localCheckedTicketTypes,
-      update: setLocalCheckedTicketTypes
+      dispatch: dispatchLocalCheckedTicketTypes
     },
     {
       title: "train",
       options: trainTypes,
       checkedOptions: localCheckedTrainTypes,
-      update: setLocalCheckedTrainTypes
+      dispatch: dispatchLocalCheckedTrainTypes
     },
     {
       title: "depart stations",
       options: departStations,
       checkedOptions: localCheckedDepartStations,
-      update: setLocalCheckedDepartStations
+      dispatch: dispatchLocalCheckedDepartStations
     },
     {
       title: "arrive stations",
       options: arriveStations,
       checkedOptions: localCheckedArriveStations,
-      update: setLocalCheckedArriveStations
+      dispatch: dispatchLocalCheckedArriveStations
     }
   ];
 
@@ -174,10 +200,10 @@ const BottomModel = memo(props => {
     if (isResetDisabled) {
       return;
     }
-    setLocalCheckedArriveStations({});
-    setLocalCheckedDepartStations({});
-    setLocalCheckedTrainTypes({});
-    setLocalCheckedTicketTypes({});
+    dispatchLocalCheckedArriveStations({ type: "reset" });
+    dispatchLocalCheckedDepartStations({ type: "reset" });
+    dispatchLocalCheckedTrainTypes({ type: "reset" });
+    dispatchLocalCheckedTicketTypes({ type: "reset" });
 
     setLocalDepartTimeStart(0);
     setLocalDepartTimeEnd(24);
