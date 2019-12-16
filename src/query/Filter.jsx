@@ -27,20 +27,7 @@ SingleFilter.propTypes = {
 };
 
 const Option = memo(props => {
-  const { title, options, checkedOptions, update } = props;
-
-  const toggle = useCallback(
-    val => {
-      const newCheckedOptions = { ...checkedOptions };
-      if (val in checkedOptions) {
-        delete newCheckedOptions[val];
-      } else {
-        newCheckedOptions[val] = true;
-      }
-      update(newCheckedOptions);
-    },
-    [update, checkedOptions]
-  );
+  const { title, options, checkedOptions, dispatch } = props;
 
   return (
     <div className="option">
@@ -52,7 +39,7 @@ const Option = memo(props => {
               {...option}
               key={option.value}
               checked={option.value in checkedOptions}
-              toggle={toggle}
+              dispatch={dispatch}
             />
           );
         })}
@@ -65,7 +52,7 @@ Option.propTypes = {
   title: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   checkedOptions: PropTypes.object.isRequired,
-  update: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired
 };
 
 const BottomModel = memo(props => {
