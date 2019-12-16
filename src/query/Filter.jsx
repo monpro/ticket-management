@@ -5,14 +5,33 @@ import "./Filter.css";
 import { ORDER_DEPART } from "./constant";
 import Slider from "./Slider.jsx";
 
-const checkedReducer = () => {};
+const checkedReducer = (state, action) => {
+  let newState;
+  const { type, payload } = action;
+  switch (type) {
+    case "toggle": {
+      newState = { ...state };
+      if (payload in newState) {
+        delete newState[payload];
+      } else {
+        newState[payload] = true;
+      }
+      return newState;
+    }
+
+    case "reset":
+      return {};
+    default:
+      return state;
+  }
+};
 const SingleFilter = memo(props => {
-  const { name, checked, toggle, value } = props;
+  const { name, checked, dispatch, value } = props;
 
   return (
     <li
       className={classnames({ checked: checked })}
-      onClick={() => toggle(value)}
+      onClick={() => dispatch({ type: "toggle", payload: value })}
     >
       {name}
     </li>
