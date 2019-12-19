@@ -1,6 +1,10 @@
 import "./App.css";
 import React from "react";
 import { connect } from "react-redux";
+
+import Detail from "../common/Detail.jsx";
+import Candidate from "./Candidate";
+import Schedule from "./Schedule";
 const App = props => {
   const {
     departDate,
