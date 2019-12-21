@@ -1,3 +1,5 @@
+import { getDateWithDay } from "../common/helper";
+
 export const SET_DEPART_DATE = "SET_DEPART_DATE";
 export const SET_ARRIVE_DATE = "SET_ARRIVE_DATE";
 export const SET_DEPART_TIME_STR = "SET_DEPART_TIME_STR";
@@ -10,7 +12,7 @@ export const SET_TICKETS = "SET_TICKETS";
 export const SET_IS_SCHEDULE_VISIBLE = "SET_IS_SCHEDULE_VISIBLE";
 export const SET_SEARCH_PARSED = "SET_SEARCH_PARSED";
 
-export function setDepartdate(departDate) {
+export function setDepartDate(departDate) {
   return {
     type: SET_DEPART_DATE,
     payload: departDate
@@ -81,5 +83,19 @@ export function setSearchParsed(searchParsed) {
   return {
     type: SET_SEARCH_PARSED,
     payload: searchParsed
+  };
+}
+
+export function nextDate() {
+  return (dispatch, getState) => {
+    const { departDate } = getState();
+    dispatch(setDepartDate(getDateWithDay(departDate) + 86400 * 1000));
+  };
+}
+
+export function prevDate() {
+  return (dispatch, getState) => {
+    const { departDate } = getState();
+    dispatch(setDepartDate(getDateWithDay(departDate) - 86400 * 1000));
   };
 }
