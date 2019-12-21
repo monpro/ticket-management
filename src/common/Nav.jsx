@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import dayjs from "dayjs";
 import "./Nav.css";
+import { nextDate } from "../ticket/actions";
 
 const Nav = memo(function(props) {
   const { date, prev, next, isPrevDisabled, isNextDisabled } = props;
-
   const currentDateString = useMemo(() => {
     const dateObj = dayjs(date);
     return dateObj.format("M.D") + dateObj.format("ddd");
