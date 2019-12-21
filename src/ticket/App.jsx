@@ -16,7 +16,12 @@ import {
   setDepartDate,
   setSearchParsed,
   prevDate,
-  nextDate
+  nextDate,
+  setDepartTimeStr,
+  setArriveTimeStr,
+  setDurationStr,
+  setArriveDate,
+  setTickets
 } from "./actions";
 import dayjs from "dayjs";
 import { getDateWithDay } from "../common/helper";
@@ -47,6 +52,40 @@ const App = props => {
 
     dispatch(setSearchParsed(true));
   }, []);
+
+  useEffect(() => {
+    document.title = trainNumber;
+  }, [trainNumber]);
+
+  useEffect(() => {
+    if (!searchParsed) {
+      return;
+    }
+
+    const url = new URI("/rest/ticket")
+      .setSearch("date", dayjs(departDate).format("YYYY-MM-DD"))
+      .setSearch("trainNumber", trainNumber)
+      .toString();
+
+    fetch(url)
+      .then(response => response.json())
+      .then(result => {
+        const { candidates, detail } = result;
+
+        const {
+          arriveDate,
+          arriveTimeStr,
+          departTimeStr,
+          durationStr
+        } = detail;
+
+        dispatch(setDepartTimeStr(departTimeStr));
+        dispatch(setArriveTimeStr(arriveTimeStr));
+        dispatch(setDurationStr(durationStr));
+        dispatch(setArriveDate(arriveDate));
+        dispatch(setTickets(candidates));
+      });
+  }, [searchParsed, departDate, trainNumber]);
 
   const onBack = useCallback(() => {
     window.history.back();
