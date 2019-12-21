@@ -1,12 +1,12 @@
 import "./App.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import URI from "urijs";
 import { connect } from "react-redux";
 
 import Detail from "../common/Detail.jsx";
 import Candidate from "./Candidate";
 import Schedule from "./Schedule";
-
+import Header from "../common/Header";
 import {
   setDepartStation,
   setArriveStation,
@@ -33,19 +33,33 @@ const App = props => {
 
     dispatch
   } = props;
-
   useEffect(() => {
     const queries = URI.parseQuery(window.location.search);
-    const [aStation, dStation, trainNumber, date] = queries;
+    const { aStation, dStation, trainNumber, date } = queries;
 
     dispatch(setArriveStation(aStation));
     dispatch(setDepartStation(dStation));
     dispatch(setTrainNumber(trainNumber));
     dispatch(setDepartdate(getDateWithDay(dayjs(date).valueOf())));
 
-    dispatch(searchParsed(true));
+    dispatch(setSearchParsed(true));
   }, []);
-  return <div className="app"></div>;
+
+  const onBack = useCallback(() => {
+    window.history.back();
+  }, []);
+
+  if (!searchParsed) {
+    return;
+  }
+
+  return (
+    <div className="app">
+      <div className="header-wrapper">
+        <Header onBack={onBack} title={trainNumber} />
+      </div>
+    </div>
+  );
 };
 
 const mapStateToProps = state => state;
@@ -56,9 +70,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 export default connect(
-  null,
-  {
-    mapStateToProps,
-    mapDispatchToProps
-  }
+  mapStateToProps,
+  mapDispatchToProps
 )(App);
