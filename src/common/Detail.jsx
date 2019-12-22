@@ -1,8 +1,15 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import PropTypes from "prop-types";
+import dayjs from "dayjs";
 import "./Detail.css";
 
-export default function Detail(props) {
+const formatDString = dString => {
+  const date = dayjs(dString);
+
+  return date.format("MM-DD") + " " + date.format("ddd");
+};
+
+const Detail = memo(function Detail(props) {
   const {
     departDate,
     arriveDate,
@@ -13,16 +20,40 @@ export default function Detail(props) {
     trainNumber,
     durationStr
   } = props;
-  return <div></div>;
-}
+
+  const departDateStr = useMemo(() => formatDString(departDate), [departDate]);
+  const arriveDateStr = useMemo(() => formatDString(arriveDate), [arriveDate]);
+
+  return (
+    <div className="detail">
+      <div className="content">
+        <div className="left">
+          <p className="city"> {departStation} </p>
+          <p className="time"> {departTimeStr} </p>
+          <p className="date"> {departDateStr} </p>
+        </div>
+        <div className="middle">
+          <p className="train-name"> {trainNumber} </p>
+        </div>
+        <div className="right">
+          <p className="city"> {arriveStation} </p>
+          <p className="time"> {arriveTimeStr} </p>
+          <p className="date"> {arriveDateStr} </p>
+        </div>
+      </div>
+    </div>
+  );
+});
 
 Detail.propTypes = {
   departDate: PropTypes.number.isRequired,
   arriveDate: PropTypes.number.isRequired,
-  departTimeStr: PropTypes.string.isRequired,
-  arriveTimeStr: PropTypes.string.isRequired,
   departStation: PropTypes.string.isRequired,
   arriveStation: PropTypes.string.isRequired,
   trainNumber: PropTypes.string.isRequired,
-  durationStr: PropTypes.string.isRequired
+  departTimeStr: PropTypes.string,
+  arriveTimeStr: PropTypes.string,
+  durationStr: PropTypes.string
 };
+
+export default Detail;
