@@ -1,8 +1,8 @@
 import "./App.css";
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useMemo } from "react";
 import URI from "urijs";
 import { connect } from "react-redux";
-
+import { bindActionCreators } from "redux";
 import Detail from "../common/Detail.jsx";
 import Candidate from "./Candidate";
 import Schedule from "./Schedule";
@@ -21,7 +21,8 @@ import {
   setArriveTimeStr,
   setDurationStr,
   setArriveDate,
-  setTickets
+  setTickets,
+  toggleIsScheduleVisible
 } from "./actions";
 import dayjs from "dayjs";
 import { getDateWithDay } from "../common/helper";
@@ -98,6 +99,15 @@ const App = props => {
     nextDate
   );
 
+  const detailCbs = useMemo(() => {
+    return bindActionCreators(
+      {
+        toggleIsScheduleVisible
+      },
+      dispatch
+    );
+  }, []);
+
   if (!searchParsed) {
     return null;
   }
@@ -114,6 +124,19 @@ const App = props => {
           prev={prev}
           next={next}
           date={departDate}
+        />
+      </div>
+      <div className="detail-wrapper">
+        <Detail
+          departDate={departDate}
+          arriveDate={arriveDate}
+          departTimeStr={departTimeStr}
+          arriveTimeStr={arriveTimeStr}
+          departStation={departStation}
+          arriveStation={arriveStation}
+          trainNumber={trainNumber}
+          durationStr={durationStr}
+          {...detailCbs}
         />
       </div>
     </div>
