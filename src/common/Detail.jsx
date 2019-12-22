@@ -2,6 +2,7 @@ import React, { memo, useMemo } from "react";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
 import "./Detail.css";
+import { toggleIsScheduleVisible } from "../ticket/actions";
 
 const formatDString = dString => {
   const date = dayjs(dString);
@@ -18,7 +19,8 @@ const Detail = memo(function Detail(props) {
     departStation,
     arriveStation,
     trainNumber,
-    durationStr
+    durationStr,
+    toggleIsScheduleVisible
   } = props;
 
   const departDateStr = useMemo(() => formatDString(departDate), [departDate]);
@@ -34,6 +36,17 @@ const Detail = memo(function Detail(props) {
         </div>
         <div className="middle">
           <p className="train-name"> {trainNumber} </p>
+          <p className="train-mid">
+            <span className="left"></span>
+            <span
+              className="schedule"
+              onClick={() => toggleIsScheduleVisible()}
+            >
+              Time
+            </span>
+            <span className="right"></span>
+          </p>
+          <p className="train-time">{durationStr}</p>
         </div>
         <div className="right">
           <p className="city"> {arriveStation} </p>
