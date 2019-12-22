@@ -1,9 +1,28 @@
 import React from "react";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 import "./Detail.css";
 
-export function Detail(props) {
+export default function Detail(props) {
+  const {
+    departDate,
+    arriveDate,
+    departTimeStr,
+    arriveTimeStr,
+    departStation,
+    arriveStation,
+    trainNumber,
+    durationStr
+  } = props;
   return <div></div>;
 }
 
-Detail.propTypes = {};
+Detail.propTypes = {
+  departDate: PropTypes.number.isRequired,
+  arriveDate: PropTypes.number.isRequired,
+  departTimeStr: PropTypes.string.isRequired,
+  arriveTimeStr: PropTypes.string.isRequired,
+  departStation: PropTypes.string.isRequired,
+  arriveStation: PropTypes.string.isRequired,
+  trainNumber: PropTypes.string.isRequired,
+  durationStr: PropTypes.string.isRequired
+};

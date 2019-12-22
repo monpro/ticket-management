@@ -116,6 +116,18 @@ const App = props => {
           date={departDate}
         />
       </div>
+      <div className="detail-wrapper">
+        <Detail
+          departDate={departDate}
+          arriveDate={arriveDate}
+          departTimeStr={departTimeStr}
+          arriveTimeStr={arriveTimeStr}
+          departStation={departStation}
+          arriveStation={arriveStation}
+          trainNumber={trainNumber}
+          durationStr={durationStr}
+        />
+      </div>
     </div>
   );
 };
