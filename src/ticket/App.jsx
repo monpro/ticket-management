@@ -1,11 +1,10 @@
 import "./App.css";
-import React, { useEffect, useCallback, useMemo } from "react";
+import React, { useEffect, useCallback, useMemo, lazy, Suspense } from "react";
 import URI from "urijs";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Detail from "../common/Detail.jsx";
 import Candidate from "./Candidate";
-import Schedule from "./Schedule";
 import Header from "../common/Header";
 import Nav from "../common/Nav";
 import useNav from "../common/useNav";
@@ -26,6 +25,8 @@ import {
 } from "./actions";
 import dayjs from "dayjs";
 import { getDateWithDay } from "../common/helper";
+
+const Schedule = lazy(() => import("./Schedule.jsx"));
 
 const App = props => {
   const {
@@ -139,6 +140,21 @@ const App = props => {
           {...detailCbs}
         />
       </div>
+      {isScheduleVisible && (
+        <div
+          className="mask"
+          onClick={() => dispatch(toggleIsScheduleVisible())}
+        >
+          <Suspense>
+            <Schedule
+              departDate={departDate}
+              trainNumber={trainNumber}
+              departStation={departStation}
+              arriveStation={arriveStation}
+            />
+          </Suspense>
+        </div>
+      )}
     </div>
   );
 };
