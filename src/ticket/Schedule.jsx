@@ -11,7 +11,7 @@ const ScheduleRow = memo(props => {
     index,
     station,
     arriveTime,
-    departTiem,
+    departTime,
     stay,
 
     isStartStation,
@@ -21,9 +21,11 @@ const ScheduleRow = memo(props => {
     beforeDepartStation,
     afterArriveStation
   } = props;
-
+  /* eslint-disable no-console */
+  console.log("this is", props);
+  /* eslint-enable no-console */
   return (
-    <div>
+    <li>
       <div
         className={classnames("icon", {
           "icon-red": isDepartStation || isArriveStation
@@ -55,13 +57,13 @@ const ScheduleRow = memo(props => {
             red: isDepartStation
           })}
         >
-          {isEndStation ? "Arrive" : departTiem}
+          {isEndStation ? "Arrive" : departTime}
         </span>
         <span className="stoptime">
           {isStartStation || isEndStation ? "-" : stay}
         </span>
       </div>
-    </div>
+    </li>
   );
 });
 
@@ -81,11 +83,14 @@ const Schedule = memo(function Schedule(props) {
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        let departRow = {};
-        let arriveRow = {};
+        let departRow;
+        let arriveRow;
         data.forEach((v, index) => {
           if (!departRow) {
             if (v.station === departStation) {
+              /* eslint-disable no-console */
+              console.log(v.station);
+              /* eslint-enable no-console */
               departRow = Object.assign(v, {
                 ...v,
                 beforeDepartStation: false,
@@ -135,11 +140,35 @@ const Schedule = memo(function Schedule(props) {
             isEndStation: index === data.length - 1
           });
         });
+        /* eslint-disable no-console */
+        console.log(data);
+        /* eslint-enable no-console */
         setScheduleList(data);
       });
   }, [departDate, trainNumber, departStation, arriveStation]);
 
-  return <div className="schedule">schedule</div>;
+  return (
+    <div className="schedule">
+      <div className="dialog">
+        <h1>TimeTable</h1>
+        <div className="head">
+          <span className="station">station</span>
+          <span className="deptime">depart</span>
+          <span className="arrtime">arrive</span>
+          <span className="stoptime">stoptime</span>
+        </div>
+        {scheduleList.map((schedule, index) => {
+          return (
+            <ScheduleRow
+              key={schedule.station}
+              index={index + 1}
+              {...schedule}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
 });
 
 Schedule.propTypes = {
