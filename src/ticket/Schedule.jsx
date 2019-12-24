@@ -80,7 +80,63 @@ const Schedule = memo(function Schedule(props) {
 
     fetch(url)
       .then(response => response.json())
-      .then(data => {});
+      .then(data => {
+        let departRow = {};
+        let arriveRow = {};
+        data.forEach((v, index) => {
+          if (!departRow) {
+            if (v.station === departStation) {
+              departRow = Object.assign(v, {
+                ...v,
+                beforeDepartStation: false,
+                isDepartStation: true,
+                afterArriveStation: false,
+                isArriveStation: false
+              });
+            } else {
+              Object.assign(v, {
+                ...v,
+                beforeDepartStation: true,
+                isDepartStation: false,
+                afterArriveStation: false,
+                isArriveStation: false
+              });
+            }
+          } else if (!arriveRow) {
+            if (v.station === arriveStation) {
+              arriveRow = Object.assign(v, {
+                ...v,
+                beforeDepartStation: false,
+                isDepartStation: false,
+                afterArriveStation: false,
+                isArriveStation: true
+              });
+            } else {
+              Object.assign(v, {
+                ...v,
+                beforeDepartStation: false,
+                isDepartStation: false,
+                afterArriveStation: false,
+                isArriveStation: false
+              });
+            }
+          } else {
+            Object.assign(v, {
+              ...v,
+              beforeDepartStation: false,
+              isDepartStation: false,
+              afterArriveStation: true,
+              isArriveStation: false
+            });
+          }
+
+          Object.assign(v, {
+            isStartStation: index === 0,
+            isEndStation: index === data.length - 1
+          });
+        });
+        setScheduleList(data);
+      });
   }, [departDate, trainNumber, departStation, arriveStation]);
 
   return <div className="schedule">schedule</div>;
