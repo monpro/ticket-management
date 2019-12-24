@@ -145,7 +145,7 @@ const App = props => {
           className="mask"
           onClick={() => dispatch(toggleIsScheduleVisible())}
         >
-          <Suspense>
+          <Suspense fallback={null}>
             <Schedule
               departDate={departDate}
               trainNumber={trainNumber}
