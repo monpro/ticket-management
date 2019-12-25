@@ -8,6 +8,7 @@ import Candidate from "./Candidate";
 import Header from "../common/Header";
 import Nav from "../common/Nav";
 import useNav from "../common/useNav";
+import { TrainContext } from "./context";
 import {
   setDepartStation,
   setArriveStation,
@@ -140,7 +141,16 @@ const App = props => {
           {...detailCbs}
         />
       </div>
-      <Candidate tickets={tickets} />
+      <TrainContext.Provider
+        value={{
+          trainNumber,
+          departStation,
+          arriveStation,
+          departDate
+        }}
+      >
+        <Candidate tickets={tickets} />
+      </TrainContext.Provider>
       {isScheduleVisible && (
         <div
           className="mask"
