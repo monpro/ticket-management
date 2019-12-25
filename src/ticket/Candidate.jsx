@@ -2,9 +2,28 @@ import React, { memo } from "react";
 import PropTypes from "prop-types";
 import "./Candidate.css";
 
+const Channel = null;
+
 const Seat = memo(props => {
   const { type, priceMsg, ticketsLeft, channels } = props;
-  return <li></li>;
+  return (
+    <li>
+      <div className="bar">
+        <span className="seat">{type}</span>
+        <span className="price">
+          <i>$</i>
+          {priceMsg}
+        </span>
+        <span className="btn">close</span>
+        <span className="num">{ticketsLeft}</span>
+      </div>
+      <div className="channels">
+        {channels.map(channel => {
+          return <Channel key={channel.name} {...channel} type={type} />;
+        })}
+      </div>
+    </li>
+  );
 });
 
 Seat.propTypes = {
@@ -30,3 +49,5 @@ const Candidate = memo(props => {
 Candidate.propTypes = {
   tickets: PropTypes.array.isRequired
 };
+
+export default Candidate;
