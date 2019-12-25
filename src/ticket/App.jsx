@@ -140,6 +140,7 @@ const App = props => {
           {...detailCbs}
         />
       </div>
+      <Candidate tickets={tickets} />
       {isScheduleVisible && (
         <div
           className="mask"
