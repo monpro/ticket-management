@@ -15,8 +15,10 @@ import {
   setSeatType,
   setDepartDate,
   setTrainnumber,
+  fetchWithUrlQueries,
   setSearchParsed
 } from "./actions";
+import Detail from "../common/Detail";
 
 const App = props => {
   const {
@@ -49,14 +51,14 @@ const App = props => {
     dispatch(setArriveStation(aStation));
     dispatch(setDepartStation(dStation));
     dispatch(setSeatType(type));
-    dispatch(setDepartDate(dayjs(date)).valueOf());
+    dispatch(setDepartDate(dayjs(date).valueOf()));
     dispatch(setTrainnumber(trainNumber));
     dispatch(setSearchParsed(true));
   }, []);
 
   useEffect(() => {
     if (!searchParsed) {
-      return null;
+      return;
     }
 
     const url = new URI("/rest/order")
@@ -65,6 +67,8 @@ const App = props => {
       .setSearch("type", seatType)
       .setSearch("date", dayjs(departDate).format("YYYY-MM-DD"))
       .toString();
+
+    dispatch(fetchWithUrlQueries(url));
   }, [arriveStation, departStation, seatType, departDate, searchParsed]);
 
   if (!searchParsed) {
@@ -75,6 +79,20 @@ const App = props => {
     <div className="app">
       <div className="header-wrapper">
         <Header onBack={onBack} title={"order"} />
+      </div>
+      <div className="detail-wrapper">
+        <Detail
+          departDate={departDate}
+          arriveDate={arriveDate}
+          departTimeStr={departTimeStr}
+          arriveTimeStr={arriveTimeStr}
+          departStation={departStation}
+          arriveStation={arriveStation}
+          trainNumber={trainNumber}
+          durationStr={durationStr}
+        >
+          <span style={{ display: "block" }} className="train-icon" />
+        </Detail>
       </div>
     </div>
   );

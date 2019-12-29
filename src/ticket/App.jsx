@@ -138,8 +138,14 @@ const App = props => {
           arriveStation={arriveStation}
           trainNumber={trainNumber}
           durationStr={durationStr}
-          {...detailCbs}
-        />
+        >
+          <span
+            className="schedule"
+            onClick={() => detailCbs.toggleIsScheduleVisible()}
+          >
+            Time
+          </span>
+        </Detail>
       </div>
       <TrainContext.Provider
         value={{
