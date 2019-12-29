@@ -80,6 +80,9 @@ export default {
     }
   },
   arriveTimeStr(state = null, action) {
+    /* eslint-disable no-console */
+    console.log(action);
+    /* eslint-enable no-console */
     const { type, payload } = action;
     switch (type) {
       case SET_ARRIVE_TIME_STR:

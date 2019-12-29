@@ -114,7 +114,7 @@ export function setSearchParsed(searchParsed) {
 export function fetchWithUrlQueries(url) {
   return (dispatch, getState) => {
     fetch(url)
-      .then(res => res.json)
+      .then(res => res.json())
       .then(data => {
         const {
           arriveTimeStr,
@@ -124,6 +124,9 @@ export function fetchWithUrlQueries(url) {
           price
         } = data;
 
+        /* eslint-disable no-console */
+        console.log(data);
+        /* eslint-enable no-console */
         dispatch(setArriveTimeStr(arriveTimeStr));
         dispatch(setDepartTimeStr(departTimeStr));
         dispatch(setArriveDate(arriveDate));
