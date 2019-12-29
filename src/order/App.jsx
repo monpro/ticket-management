@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import "./App.css";
 import { connect } from "react-redux";
 import Header from "../common/Header";
@@ -26,7 +26,17 @@ const App = props => {
     dispatch
   } = props;
 
-  return <div className="app"></div>;
+  const onBack = useCallback(() => {
+    window.history.back();
+  }, []);
+
+  return (
+    <div className="app">
+      <div className="header-wrapper">
+        <Header onBack={onBack} title={"order"} />
+      </div>
+    </div>
+  );
 };
 
 const mapStateToProps = state => state;
