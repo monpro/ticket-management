@@ -54,6 +54,23 @@ const App = props => {
     dispatch(setSearchParsed(true));
   }, []);
 
+  useEffect(() => {
+    if (!searchParsed) {
+      return null;
+    }
+
+    const url = new URI("/rest/order")
+      .setSearch("aStation", arriveStation)
+      .setSearch("dStation", departStation)
+      .setSearch("type", seatType)
+      .setSearch("date", dayjs(departDate).format("YYYY-MM-DD"))
+      .toString();
+  }, [arriveStation, departStation, seatType, departDate, searchParsed]);
+
+  if (!searchParsed) {
+    return null;
+  }
+
   return (
     <div className="app">
       <div className="header-wrapper">
