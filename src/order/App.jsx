@@ -94,6 +94,7 @@ const App = props => {
           <span style={{ display: "block" }} className="train-icon" />
         </Detail>
       </div>
+      <Ticket price={price} type={seatType} />
     </div>
   );
 };
