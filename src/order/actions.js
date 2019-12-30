@@ -139,8 +139,18 @@ export function createAdult() {
   return (dispatch, getState) => {
     const { passengers } = getState();
 
+    for (let passenger of passengers) {
+      const values = Object.values(passenger);
+      for (let value of values) {
+        if (!value) {
+          return;
+        }
+      }
+    }
+
     dispatch(
       setPassengers([
+        ...passengers,
         {
           id: ++passengerId,
           name: "",
@@ -157,8 +167,28 @@ export function createChild() {
   return (dispatch, getState) => {
     const { passengers } = getState();
 
+    let adult = null;
+
+    for (let passenger of passengers) {
+      const values = Object.values(passenger);
+      for (let value of values) {
+        if (!value) {
+          return;
+        }
+      }
+
+      if (passenger.ticketType === "adult") {
+        adult = passenger.id;
+      }
+    }
+
+    if (!adult) {
+      alert("cannot find adult");
+      return;
+    }
     dispatch(
       setPassengers([
+        ...passengers,
         {
           id: ++passengerId,
           name: "",

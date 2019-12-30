@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import "./App.css";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import URI from "urijs";
 import dayjs from "dayjs";
 import Header from "../common/Header";
@@ -16,7 +17,9 @@ import {
   setDepartDate,
   setTrainnumber,
   fetchWithUrlQueries,
-  setSearchParsed
+  setSearchParsed,
+  createAdult,
+  createChild
 } from "./actions";
 import Detail from "../common/Detail";
 
@@ -71,6 +74,16 @@ const App = props => {
     dispatch(fetchWithUrlQueries(url));
   }, [arriveStation, departStation, seatType, departDate, searchParsed]);
 
+  const passengersCbs = useMemo(() => {
+    return bindActionCreators(
+      {
+        createChild,
+        createAdult
+      },
+      dispatch
+    );
+  }, []);
+
   if (!searchParsed) {
     return null;
   }
@@ -95,6 +108,7 @@ const App = props => {
         </Detail>
       </div>
       <Ticket price={price} type={seatType} />
+      <Passengers passengers={passengers} {...passengersCbs} />
     </div>
   );
 };
