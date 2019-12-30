@@ -124,14 +124,51 @@ export function fetchWithUrlQueries(url) {
           price
         } = data;
 
-        /* eslint-disable no-console */
-        console.log(data);
-        /* eslint-enable no-console */
         dispatch(setArriveTimeStr(arriveTimeStr));
         dispatch(setDepartTimeStr(departTimeStr));
         dispatch(setArriveDate(arriveDate));
         dispatch(setDurationStr(durationStr));
         dispatch(setPrice(price));
       });
+  };
+}
+
+let passengerId = 0;
+
+export function createAdult() {
+  return (dispatch, getState) => {
+    const { passengers } = getState();
+
+    dispatch(
+      setPassengers([
+        {
+          id: ++passengerId,
+          name: "",
+          ticketType: "adult",
+          licenseNo: "",
+          seat: "Z"
+        }
+      ])
+    );
+  };
+}
+
+export function createChild() {
+  return (dispatch, getState) => {
+    const { passengers } = getState();
+
+    dispatch(
+      setPassengers([
+        {
+          id: ++passengerId,
+          name: "",
+          ticketType: "adult",
+          gender: "none",
+          birthday: "",
+          followAdult: "",
+          seat: "Z"
+        }
+      ])
+    );
   };
 }
