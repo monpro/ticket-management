@@ -19,7 +19,8 @@ import {
   fetchWithUrlQueries,
   setSearchParsed,
   createAdult,
-  createChild
+  createChild,
+  removePassenger
 } from "./actions";
 import Detail from "../common/Detail";
 
@@ -78,7 +79,8 @@ const App = props => {
     return bindActionCreators(
       {
         createChild,
-        createAdult
+        createAdult,
+        removePassenger
       },
       dispatch
     );

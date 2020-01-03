@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import "./Passengers.css";
 import PropTypes from "prop-types";
+import { removePassenger } from "./actions";
 
 const Passenger = memo(props => {
   const {
@@ -10,15 +11,16 @@ const Passenger = memo(props => {
     ticketType,
     licenceNo,
     gender,
-    birthday
+    birthday,
+    onRemove
   } = props;
 
-  const onRemove = () => {};
   return (
     <li className="passenger">
       <i className="delete" onClick={() => onRemove(id)}>
-        {props.id}
+        -
       </i>
+      {props.id}
     </li>
   );
 });
@@ -30,16 +32,23 @@ Passenger.propTypes = {
   ticketType: PropTypes.string.required,
   licenceNo: PropTypes.string.required,
   gender: PropTypes.string,
-  birthday: PropTypes.string
+  birthday: PropTypes.string,
+  onRemove: PropTypes.func.isRequired
 };
 const Passengers = memo(props => {
-  const { passengers, createAdult, createChild } = props;
+  const { passengers, createAdult, createChild, removePassenger } = props;
 
   return (
     <div className="passengers">
       <ul>
         {passengers.map(passenger => {
-          return <Passenger {...passenger} key={passenger.id} />;
+          return (
+            <Passenger
+              {...passenger}
+              key={passenger.id}
+              onRemove={removePassenger}
+            />
+          );
         })}
       </ul>
       <section className="add">

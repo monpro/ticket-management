@@ -202,3 +202,15 @@ export function createChild() {
     );
   };
 }
+
+export function removePassenger(id) {
+  return (dispatch, getState) => {
+    const { passengers } = getState();
+
+    const filterdPassengers = passengers.filter(passenger => {
+      return passenger.id !== id && passenger.followAdult !== id;
+    });
+
+    dispatch(setPassengers(filterdPassengers));
+  };
+}
