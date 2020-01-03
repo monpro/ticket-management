@@ -172,7 +172,7 @@ export function createChild() {
     for (let passenger of passengers) {
       const values = Object.values(passenger);
       for (let value of values) {
-        if (!value) {
+        if (value === undefined) {
           return;
         }
       }
@@ -186,19 +186,49 @@ export function createChild() {
       alert("cannot find adult");
       return;
     }
+
+    /* eslint-disable no-console */
+    console.log("you got here");
+    /* eslint-enable no-console */
     dispatch(
       setPassengers([
         ...passengers,
         {
           id: ++passengerId,
           name: "",
-          ticketType: "adult",
+          ticketType: "child",
           gender: "none",
           birthday: "",
-          followAdult: "",
+          followAdult: adult,
           seat: "Z"
         }
       ])
     );
+  };
+}
+
+export function removePassenger(id) {
+  return (dispatch, getState) => {
+    const { passengers } = getState();
+
+    const filterdPassengers = passengers.filter(passenger => {
+      return passenger.id !== id && passenger.followAdult !== id;
+    });
+
+    dispatch(setPassengers(filterdPassengers));
+  };
+}
+
+export function updatePassenger(id, data) {
+  return (dispatch, getState) => {
+    const { passengers } = getState();
+    for (let i = 0; i < passengers.length; i++) {
+      if (passengers[i].id === id) {
+        const newPassenger = [...passengers];
+        newPassenger[i] = Object.assign({}, passengers[i], data);
+        dispatch(setPassengers(newPassenger));
+        break;
+      }
+    }
   };
 }
