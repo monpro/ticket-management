@@ -12,7 +12,8 @@ const Passenger = memo(props => {
     licenceNo,
     gender,
     birthday,
-    onRemove
+    onRemove,
+    onUpdate
   } = props;
 
   return (
@@ -20,7 +21,21 @@ const Passenger = memo(props => {
       <i className="delete" onClick={() => onRemove(id)}>
         -
       </i>
-      {props.id}
+      <ol className="items">
+        <li className="item">
+          <label className="label name">name</label>
+          <input
+            type="text"
+            className="input name"
+            placeholder="passenger name"
+            value={name}
+            onChange={e => onUpdate(id, { name: e.target.value })}
+          />
+          <label className="ticket-type">
+            {ticketType === "adult" ? "adult" : "child"}
+          </label>
+        </li>
+      </ol>
     </li>
   );
 });
@@ -33,10 +48,17 @@ Passenger.propTypes = {
   licenceNo: PropTypes.string.required,
   gender: PropTypes.string,
   birthday: PropTypes.string,
-  onRemove: PropTypes.func.isRequired
+  onRemove: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired
 };
 const Passengers = memo(props => {
-  const { passengers, createAdult, createChild, removePassenger } = props;
+  const {
+    passengers,
+    createAdult,
+    createChild,
+    removePassenger,
+    updatePassenger
+  } = props;
 
   return (
     <div className="passengers">
@@ -47,6 +69,7 @@ const Passengers = memo(props => {
               {...passenger}
               key={passenger.id}
               onRemove={removePassenger}
+              onUpdate={updatePassenger}
             />
           );
         })}

@@ -20,7 +20,8 @@ import {
   setSearchParsed,
   createAdult,
   createChild,
-  removePassenger
+  removePassenger,
+  updatePassenger
 } from "./actions";
 import Detail from "../common/Detail";
 
@@ -80,7 +81,8 @@ const App = props => {
       {
         createChild,
         createAdult,
-        removePassenger
+        removePassenger,
+        updatePassenger
       },
       dispatch
     );

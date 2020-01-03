@@ -214,3 +214,17 @@ export function removePassenger(id) {
     dispatch(setPassengers(filterdPassengers));
   };
 }
+
+export function updatePassenger(id, data) {
+  return (dispatch, getState) => {
+    const { passengers } = getState();
+    for (let i = 0; i < passengers.length; i++) {
+      if (passengers[i].id === id) {
+        const newPassenger = [...passengers];
+        newPassenger[i] = Object.assign({}, passengers[i], data);
+        dispatch(setPassengers(newPassenger));
+        break;
+      }
+    }
+  };
+}
