@@ -16,6 +16,7 @@ const Passenger = memo(props => {
     onUpdate
   } = props;
 
+  const isAdult = ticketType === "adult";
   return (
     <li className="passenger">
       <i className="delete" onClick={() => onRemove(id)}>
@@ -31,10 +32,59 @@ const Passenger = memo(props => {
             value={name}
             onChange={e => onUpdate(id, { name: e.target.value })}
           />
-          <label className="ticket-type">
-            {ticketType === "adult" ? "adult" : "child"}
-          </label>
+          <label className="ticket-type">{isAdult ? "adult" : "child"}</label>
         </li>
+        {isAdult && (
+          <li className="item">
+            <label className="label licenceNo">licence</label>
+            <input
+              type="text"
+              className="input licenceNo"
+              placeholder="licence Number"
+              value={licenceNo}
+              onChange={e => onUpdate(id, { licenceNo: e.target.value })}
+            />
+          </li>
+        )}
+
+        {!isAdult && (
+          <li className="item arrow">
+            <label className="label gender">gender</label>
+            <input
+              type="text"
+              className="input gender"
+              placeholder="please choose gender"
+              value={gender ? gender : ""}
+              readOnly
+            />
+          </li>
+        )}
+
+        {!isAdult && (
+          <li className="item">
+            <label className="label birthday">gender</label>
+            <input
+              type="text"
+              className="input birthday"
+              placeholder="birthday"
+              value={birthday}
+              onChange={e => onUpdate(id, { birthday: e.target.value })}
+            />
+          </li>
+        )}
+
+        {!isAdult && (
+          <li className="item arrow">
+            <label className="label followAdult">follow Adult</label>
+            <input
+              type="text"
+              className="input followAdult"
+              placeholder="please choose"
+              value={followingAdult}
+              readOnly
+            />
+          </li>
+        )}
       </ol>
     </li>
   );

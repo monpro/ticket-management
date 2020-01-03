@@ -172,7 +172,7 @@ export function createChild() {
     for (let passenger of passengers) {
       const values = Object.values(passenger);
       for (let value of values) {
-        if (!value) {
+        if (value === undefined) {
           return;
         }
       }
@@ -186,13 +186,17 @@ export function createChild() {
       alert("cannot find adult");
       return;
     }
+
+    /* eslint-disable no-console */
+    console.log("you got here");
+    /* eslint-enable no-console */
     dispatch(
       setPassengers([
         ...passengers,
         {
           id: ++passengerId,
           name: "",
-          ticketType: "adult",
+          ticketType: "child",
           gender: "none",
           birthday: "",
           followAdult: adult,
