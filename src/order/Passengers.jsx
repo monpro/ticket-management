@@ -3,10 +3,35 @@ import "./Passengers.css";
 import PropTypes from "prop-types";
 
 const Passenger = memo(props => {
-  return <li>{props.id}</li>;
+  const {
+    id,
+    name,
+    followingAdult,
+    ticketType,
+    licenceNo,
+    gender,
+    birthday
+  } = props;
+
+  const onRemove = () => {};
+  return (
+    <li className="passenger">
+      <i className="delete" onClick={() => onRemove(id)}>
+        {props.id}
+      </i>
+    </li>
+  );
 });
 
-Passenger.propTypes = {};
+Passenger.propTypes = {
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  followingAdult: PropTypes.number,
+  ticketType: PropTypes.string.required,
+  licenceNo: PropTypes.string.required,
+  gender: PropTypes.string,
+  birthday: PropTypes.string
+};
 const Passengers = memo(props => {
   const { passengers, createAdult, createChild } = props;
 

@@ -195,7 +195,7 @@ export function createChild() {
           ticketType: "adult",
           gender: "none",
           birthday: "",
-          followAdult: "",
+          followAdult: adult,
           seat: "Z"
         }
       ])
