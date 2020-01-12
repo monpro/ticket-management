@@ -232,3 +232,14 @@ export function updatePassenger(id, data) {
     }
   };
 }
+
+export function showMenu(menu) {
+  return dispatch => {
+    dispatch(setMenu(menu));
+    dispatch(setIsMenuVisible(true));
+  };
+}
+
+export function hideMenu() {
+  return setIsMenuVisible(false);
+}

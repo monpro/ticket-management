@@ -122,9 +122,7 @@ const Suggest = memo(props => {
 
 const CityList = memo(props => {
   const { sections, onSelect, toAlpha } = props;
-  /* eslint-disable no-console */
-  console.log(getAlphabetArray());
-  /* eslint-enable no-console */
+
   return (
     <div className="city-list">
       <div className="city-cate">
