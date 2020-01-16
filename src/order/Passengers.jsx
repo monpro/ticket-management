@@ -13,7 +13,8 @@ const Passenger = memo(props => {
     gender,
     birthday,
     onRemove,
-    onUpdate
+    onUpdate,
+    showGenderMenu
   } = props;
 
   const isAdult = ticketType === "adult";
@@ -99,7 +100,8 @@ Passenger.propTypes = {
   gender: PropTypes.string,
   birthday: PropTypes.string,
   onRemove: PropTypes.func.isRequired,
-  onUpdate: PropTypes.func.isRequired
+  onUpdate: PropTypes.func.isRequired,
+  showGenderMenu: PropTypes.func.isRequired
 };
 const Passengers = memo(props => {
   const {
@@ -107,7 +109,8 @@ const Passengers = memo(props => {
     createAdult,
     createChild,
     removePassenger,
-    updatePassenger
+    updatePassenger,
+    showGenderMenu
   } = props;
 
   return (
@@ -120,6 +123,7 @@ const Passengers = memo(props => {
               key={passenger.id}
               onRemove={removePassenger}
               onUpdate={updatePassenger}
+              showGenderMenu={showGenderMenu}
             />
           );
         })}
@@ -139,7 +143,8 @@ const Passengers = memo(props => {
 Passengers.propTypes = {
   passengers: PropTypes.array.isRequired,
   createAdult: PropTypes.func.isRequired,
-  createChild: PropTypes.func.isRequired
+  createChild: PropTypes.func.isRequired,
+  showGenderMenu: PropTypes.func.isRequired
 };
 
 export default Passengers;

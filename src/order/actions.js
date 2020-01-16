@@ -240,6 +240,36 @@ export function showMenu(menu) {
   };
 }
 
+export function showGenderMenu(id) {
+  return (dispatch, getState) => {
+    const { passengers } = getState();
+    const passenger = passengers.find(passenger => passenger.id === id);
+    if (!passenger) {
+      return;
+    }
+
+    dispatch(
+      showMenu({
+        onPress(gender) {
+          dispatch(updatePassenger(id, { gender }));
+          dispatch(hideMenu());
+        },
+        options: [
+          {
+            title: "male",
+            value: "male",
+            active: "male" === passenger.gender
+          },
+          {
+            title: "female",
+            value: "female",
+            active: "female" === passenger.gender
+          }
+        ]
+      })
+    );
+  };
+}
 export function hideMenu() {
   return setIsMenuVisible(false);
 }
