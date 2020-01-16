@@ -21,9 +21,11 @@ import {
   createAdult,
   createChild,
   removePassenger,
-  updatePassenger
+  updatePassenger,
+  hideMenu
 } from "./actions";
 import Detail from "../common/Detail";
+import Menu from "./Menu";
 
 const App = props => {
   const {
@@ -88,6 +90,15 @@ const App = props => {
     );
   }, []);
 
+  const menuCbs = useMemo(() => {
+    return bindActionCreators(
+      {
+        hideMenu
+      },
+      dispatch
+    );
+  }, []);
+
   if (!searchParsed) {
     return null;
   }
@@ -113,6 +124,7 @@ const App = props => {
       </div>
       <Ticket price={price} type={seatType} />
       <Passengers passengers={passengers} {...passengersCbs} />
+      <Menu show={isMenuVisible} {...menu} {...menuCbs} />
     </div>
   );
 };

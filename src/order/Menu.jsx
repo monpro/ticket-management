@@ -5,7 +5,11 @@ import "./Menu.css";
 
 const MenuItem = memo(props => {
   const { onSelect, title, value, active } = props;
-  return <div></div>;
+  return (
+    <li className={classnames({ active })} onClick={() => onSelect(value)}>
+      {title}
+    </li>
+  );
 });
 
 MenuItem.propTypes = {
