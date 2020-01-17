@@ -219,13 +219,17 @@ export function removePassenger(id) {
   };
 }
 
-export function updatePassenger(id, data) {
+export function updatePassenger(id, data, keysToBeRemoved = []) {
   return (dispatch, getState) => {
     const { passengers } = getState();
     for (let i = 0; i < passengers.length; i++) {
       if (passengers[i].id === id) {
         const newPassenger = [...passengers];
         newPassenger[i] = Object.assign({}, passengers[i], data);
+
+        for (let key of keysToBeRemoved) {
+          delete newPassenger[i][key];
+        }
         dispatch(setPassengers(newPassenger));
         break;
       }
@@ -237,6 +241,136 @@ export function showMenu(menu) {
   return dispatch => {
     dispatch(setMenu(menu));
     dispatch(setIsMenuVisible(true));
+  };
+}
+
+export function showGenderMenu(id) {
+  return (dispatch, getState) => {
+    const { passengers } = getState();
+    const passenger = passengers.find(passenger => passenger.id === id);
+    if (!passenger) {
+      return;
+    }
+
+    dispatch(
+      showMenu({
+        onPress(gender) {
+          /* eslint-disable no-console */
+          console.log("you got here", gender);
+          /* eslint-enable no-console */
+          dispatch(updatePassenger(id, { gender }));
+          dispatch(hideMenu());
+        },
+        options: [
+          {
+            title: "male",
+            value: "male",
+            active: "male" === passenger.gender
+          },
+          {
+            title: "female",
+            value: "female",
+            active: "female" === passenger.gender
+          }
+        ]
+      })
+    );
+  };
+}
+
+export function showFollowAdultMenu(id) {
+  return (dispatch, getState) => {
+    const { passengers } = getState();
+    const passenger = passengers.find(passenger => passenger.id === id);
+
+    if (!passenger) {
+      return;
+    }
+
+    dispatch(
+      showMenu({
+        onPress(followAdult) {
+          /* eslint-disable no-console */
+          console.log("you got here", followAdult);
+          /* eslint-enable no-console */
+          dispatch(updatePassenger(id, { followAdult }));
+          dispatch(hideMenu());
+        },
+        options: passengers
+          .filter(passenger => passenger.ticketType === "adult")
+          .map(adult => {
+            return {
+              title: adult.name,
+              value: adult.id,
+              active: adult.id === passenger.followAdult
+            };
+          })
+      })
+    );
+  };
+}
+
+export function showTicketTypeMenu(id) {
+  return (dispatch, getState) => {
+    const { passengers } = getState();
+
+    const passenger = passengers.find(passenger => passenger.id === id);
+    if (!passenger) {
+      return;
+    }
+    dispatch(
+      showMenu({
+        onPress(ticketType) {
+          if (ticketType === "adult") {
+            dispatch(
+              updatePassenger(
+                id,
+                {
+                  ticketType,
+                  licenceNo: ""
+                },
+                ["gender", "followAdult", "birthday"]
+              )
+            );
+          } else {
+            const adult = passengers.find(
+              passenger =>
+                passenger.id !== id && passenger.ticketType === "adult"
+            );
+
+            if (adult) {
+              dispatch(
+                updatePassenger(
+                  id,
+                  {
+                    ticketType,
+                    gender: "",
+                    followAdult: adult.id,
+                    birthday: ""
+                  },
+                  ["licenseNo"]
+                )
+              );
+            } else {
+              alert("no adult");
+            }
+          }
+          dispatch(hideMenu());
+        },
+        options: [
+          {
+            title: "adult",
+            value: "adult",
+            active: "adult" === passenger.ticketType
+          },
+          {
+            title: "child",
+            value: "child",
+            active: "child" === passenger.ticketType
+          }
+        ]
+      })
+    );
   };
 }
 
