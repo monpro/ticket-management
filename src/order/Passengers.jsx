@@ -55,6 +55,7 @@ const Passenger = memo(props => {
               type="text"
               className="input gender"
               placeholder="please choose gender"
+              onClick={() => showGenderMenu(id)}
               value={gender ? gender : ""}
               readOnly
             />
