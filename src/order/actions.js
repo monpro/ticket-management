@@ -219,13 +219,17 @@ export function removePassenger(id) {
   };
 }
 
-export function updatePassenger(id, data) {
+export function updatePassenger(id, data, keysToBeRemoved = []) {
   return (dispatch, getState) => {
     const { passengers } = getState();
     for (let i = 0; i < passengers.length; i++) {
       if (passengers[i].id === id) {
         const newPassenger = [...passengers];
         newPassenger[i] = Object.assign({}, passengers[i], data);
+
+        for (let key of keysToBeRemoved) {
+          delete newPassenger[i][key];
+        }
         dispatch(setPassengers(newPassenger));
         break;
       }
@@ -301,6 +305,70 @@ export function showFollowAdultMenu(id) {
               active: adult.id === passenger.followAdult
             };
           })
+      })
+    );
+  };
+}
+
+export function showTicketTypeMenu(id) {
+  return (dispatch, getState) => {
+    const { passengers } = getState();
+
+    const passenger = passengers.find(passenger => passenger.id === id);
+    if (!passenger) {
+      return;
+    }
+    dispatch(
+      showMenu({
+        onPress(ticketType) {
+          if (ticketType === "adult") {
+            dispatch(
+              updatePassenger(
+                id,
+                {
+                  ticketType,
+                  licenceNo: ""
+                },
+                ["gender", "followAdult", "birthday"]
+              )
+            );
+          } else {
+            const adult = passengers.find(
+              passenger =>
+                passenger.id === id && passenger.ticketType === "adult"
+            );
+
+            if (adult) {
+              dispatch(
+                updatePassenger(
+                  id,
+                  {
+                    ticketType,
+                    gender: "",
+                    followAdult: adult.id,
+                    birthday: ""
+                  },
+                  ["licenseNo"]
+                )
+              );
+            } else {
+              alert("no adult");
+            }
+          }
+          dispatch(hideMenu());
+        },
+        options: [
+          {
+            title: "adult",
+            value: "adult",
+            active: "adult" === passenger.ticketType
+          },
+          {
+            title: "adult",
+            value: "child",
+            active: "child" === passenger.ticketType
+          }
+        ]
       })
     );
   };
