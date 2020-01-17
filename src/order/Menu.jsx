@@ -46,8 +46,8 @@ const Menu = memo(props => {
 Menu.propTypes = {
   show: PropTypes.bool.isRequired,
   options: PropTypes.array,
-  onPress: PropTypes.func.isRequired,
-  hiddenMenu: PropTypes.func.isRequired
+  onPress: PropTypes.func,
+  hiddenMenu: PropTypes.func
 };
 
 export default Menu;

@@ -14,7 +14,8 @@ const Passenger = memo(props => {
     birthday,
     onRemove,
     onUpdate,
-    showGenderMenu
+    showGenderMenu,
+    showFollowAdultMenu
   } = props;
 
   const isAdult = ticketType === "adult";
@@ -83,6 +84,7 @@ const Passenger = memo(props => {
               className="input followAdult"
               placeholder="please choose"
               value={followingAdult}
+              onClick={() => showFollowAdultMenu(id)}
               readOnly
             />
           </li>
@@ -102,7 +104,8 @@ Passenger.propTypes = {
   birthday: PropTypes.string,
   onRemove: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
-  showGenderMenu: PropTypes.func.isRequired
+  showGenderMenu: PropTypes.func.isRequired,
+  showFollowAdultMenu: PropTypes.func.isRequired
 };
 const Passengers = memo(props => {
   const {
@@ -111,7 +114,8 @@ const Passengers = memo(props => {
     createChild,
     removePassenger,
     updatePassenger,
-    showGenderMenu
+    showGenderMenu,
+    showFollowAdultMenu
   } = props;
 
   return (
@@ -122,6 +126,7 @@ const Passengers = memo(props => {
             <Passenger
               {...passenger}
               key={passenger.id}
+              showFollowAdultMenu={showFollowAdultMenu}
               onRemove={removePassenger}
               onUpdate={updatePassenger}
               showGenderMenu={showGenderMenu}
@@ -145,7 +150,8 @@ Passengers.propTypes = {
   passengers: PropTypes.array.isRequired,
   createAdult: PropTypes.func.isRequired,
   createChild: PropTypes.func.isRequired,
-  showGenderMenu: PropTypes.func.isRequired
+  showGenderMenu: PropTypes.func.isRequired,
+  showFollowAdultMenu: PropTypes.func.isRequired
 };
 
 export default Passengers;

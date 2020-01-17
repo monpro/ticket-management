@@ -251,6 +251,9 @@ export function showGenderMenu(id) {
     dispatch(
       showMenu({
         onPress(gender) {
+          /* eslint-disable no-console */
+          console.log("you got here", gender);
+          /* eslint-enable no-console */
           dispatch(updatePassenger(id, { gender }));
           dispatch(hideMenu());
         },
@@ -270,6 +273,39 @@ export function showGenderMenu(id) {
     );
   };
 }
+
+export function showFollowAdultMenu(id) {
+  return (dispatch, getState) => {
+    const { passengers } = getState();
+    const passenger = passengers.find(passenger => passenger.id === id);
+
+    if (!passenger) {
+      return;
+    }
+
+    dispatch(
+      showMenu({
+        onPress(followAdult) {
+          /* eslint-disable no-console */
+          console.log("you got here", followAdult);
+          /* eslint-enable no-console */
+          dispatch(updatePassenger(id, { followAdult }));
+          dispatch(hideMenu());
+        },
+        options: passengers
+          .filter(passenger => passenger.ticketType === "adult")
+          .map(adult => {
+            return {
+              title: adult.name,
+              value: adult.id,
+              active: adult.id === passenger.followAdult
+            };
+          })
+      })
+    );
+  };
+}
+
 export function hideMenu() {
   return setIsMenuVisible(false);
 }
