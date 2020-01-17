@@ -20,10 +20,10 @@ MenuItem.propTypes = {
 };
 
 const Menu = memo(props => {
-  const { show, options, onPress, hiddenMenu } = props;
+  const { show, options, onPress, hideMenu } = props;
   return (
     <div>
-      {show && <div className="menu-mask" onClick={() => hiddenMenu()}></div>}
+      {show && <div className="menu-mask" onClick={() => hideMenu()}></div>}
       <div className={classnames("menu", { show })}>
         <div className="menu-title"></div>
         <ul>
@@ -47,7 +47,7 @@ Menu.propTypes = {
   show: PropTypes.bool.isRequired,
   options: PropTypes.array,
   onPress: PropTypes.func,
-  hiddenMenu: PropTypes.func
+  hideMenu: PropTypes.func
 };
 
 export default Menu;

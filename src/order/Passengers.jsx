@@ -1,7 +1,6 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import "./Passengers.css";
 import PropTypes from "prop-types";
-import { removePassenger } from "./actions";
 
 const Passenger = memo(props => {
   const {
@@ -16,7 +15,8 @@ const Passenger = memo(props => {
     onUpdate,
     showGenderMenu,
     showFollowAdultMenu,
-    showTicketTypeMenu
+    showTicketTypeMenu,
+    followAdultName
   } = props;
 
   const isAdult = ticketType === "adult";
@@ -68,7 +68,7 @@ const Passenger = memo(props => {
 
         {!isAdult && (
           <li className="item">
-            <label className="label birthday">gender</label>
+            <label className="label birthday">birthday</label>
             <input
               type="text"
               className="input birthday"
@@ -81,12 +81,12 @@ const Passenger = memo(props => {
 
         {!isAdult && (
           <li className="item arrow">
-            <label className="label followAdult">follow Adult</label>
+            <label className="label followAdult">follow</label>
             <input
               type="text"
               className="input followAdult"
               placeholder="please choose"
-              value={followingAdult}
+              value={followAdultName}
               onClick={() => showFollowAdultMenu(id)}
               readOnly
             />
@@ -103,6 +103,7 @@ Passenger.propTypes = {
   followingAdult: PropTypes.number,
   ticketType: PropTypes.string,
   licenceNo: PropTypes.string,
+  followAdultName: PropTypes.string,
   gender: PropTypes.string,
   birthday: PropTypes.string,
   onRemove: PropTypes.func.isRequired,
@@ -123,6 +124,13 @@ const Passengers = memo(props => {
     showTicketTypeMenu
   } = props;
 
+  const passengerIdToName = useMemo(() => {
+    let idToName = {};
+    passengers.forEach(passenger => {
+      idToName[passenger.id] = passenger.name;
+    });
+    return idToName;
+  }, [passengers]);
   return (
     <div className="passengers">
       <ul>
@@ -130,6 +138,7 @@ const Passengers = memo(props => {
           return (
             <Passenger
               {...passenger}
+              followAdultName={passengerIdToName[passenger.followAdult]}
               key={passenger.id}
               showFollowAdultMenu={showFollowAdultMenu}
               showTicketTypeMenu={showTicketTypeMenu}
