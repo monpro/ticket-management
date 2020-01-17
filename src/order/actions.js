@@ -335,7 +335,7 @@ export function showTicketTypeMenu(id) {
           } else {
             const adult = passengers.find(
               passenger =>
-                passenger.id === id && passenger.ticketType === "adult"
+                passenger.id !== id && passenger.ticketType === "adult"
             );
 
             if (adult) {
@@ -364,7 +364,7 @@ export function showTicketTypeMenu(id) {
             active: "adult" === passenger.ticketType
           },
           {
-            title: "adult",
+            title: "child",
             value: "child",
             active: "child" === passenger.ticketType
           }

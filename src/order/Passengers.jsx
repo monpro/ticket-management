@@ -15,7 +15,8 @@ const Passenger = memo(props => {
     onRemove,
     onUpdate,
     showGenderMenu,
-    showFollowAdultMenu
+    showFollowAdultMenu,
+    showTicketTypeMenu
   } = props;
 
   const isAdult = ticketType === "adult";
@@ -34,7 +35,9 @@ const Passenger = memo(props => {
             value={name}
             onChange={e => onUpdate(id, { name: e.target.value })}
           />
-          <label className="ticket-type">{isAdult ? "adult" : "child"}</label>
+          <label className="ticket-type" onClick={() => showTicketTypeMenu(id)}>
+            {isAdult ? "adult" : "child"}
+          </label>
         </li>
         {isAdult && (
           <li className="item">
@@ -98,14 +101,15 @@ Passenger.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   followingAdult: PropTypes.number,
-  ticketType: PropTypes.string.required,
-  licenceNo: PropTypes.string.required,
+  ticketType: PropTypes.string,
+  licenceNo: PropTypes.string,
   gender: PropTypes.string,
   birthday: PropTypes.string,
   onRemove: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
   showGenderMenu: PropTypes.func.isRequired,
-  showFollowAdultMenu: PropTypes.func.isRequired
+  showFollowAdultMenu: PropTypes.func.isRequired,
+  showTicketTypeMenu: PropTypes.func.isRequired
 };
 const Passengers = memo(props => {
   const {
@@ -115,7 +119,8 @@ const Passengers = memo(props => {
     removePassenger,
     updatePassenger,
     showGenderMenu,
-    showFollowAdultMenu
+    showFollowAdultMenu,
+    showTicketTypeMenu
   } = props;
 
   return (
@@ -127,6 +132,7 @@ const Passengers = memo(props => {
               {...passenger}
               key={passenger.id}
               showFollowAdultMenu={showFollowAdultMenu}
+              showTicketTypeMenu={showTicketTypeMenu}
               onRemove={removePassenger}
               onUpdate={updatePassenger}
               showGenderMenu={showGenderMenu}
@@ -151,7 +157,8 @@ Passengers.propTypes = {
   createAdult: PropTypes.func.isRequired,
   createChild: PropTypes.func.isRequired,
   showGenderMenu: PropTypes.func.isRequired,
-  showFollowAdultMenu: PropTypes.func.isRequired
+  showFollowAdultMenu: PropTypes.func.isRequired,
+  showTicketTypeMenu: PropTypes.func.isRequired
 };
 
 export default Passengers;

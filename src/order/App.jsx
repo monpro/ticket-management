@@ -24,7 +24,8 @@ import {
   updatePassenger,
   hideMenu,
   showGenderMenu,
-  showFollowAdultMenu
+  showFollowAdultMenu,
+  showTicketTypeMenu
 } from "./actions";
 import Detail from "../common/Detail";
 import Menu from "./Menu";
@@ -88,7 +89,8 @@ const App = props => {
         removePassenger,
         updatePassenger,
         showGenderMenu,
-        showFollowAdultMenu
+        showFollowAdultMenu,
+        showTicketTypeMenu
       },
       dispatch
     );
